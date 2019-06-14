@@ -45,7 +45,7 @@ static int	ft_get_command(char ***av)
 	return (TRUE);
 }
 
-static int	ft_exec_bin(char **av)
+static int	ft_exec_bin(char **av, char **envp)
 {
 	char	*path;
 	pid_t	pid;
@@ -60,7 +60,7 @@ static int	ft_exec_bin(char **av)
 	if (pid == 0)
 	{
 		path = ft_strjoin("/bin/", av[0]);
-		if (execve(path, av, NULL) == FAILURE)
+		if (execve(path, av, envp) == FAILURE)
 		{
 			ft_strdel(&path);
 			return (FAILURE);
@@ -70,59 +70,51 @@ static int	ft_exec_bin(char **av)
 	return (SUCCESS);
 }
 
-static int	ft_exec_builtin(char **av)
+static int	ft_exec_builtin(char **av, char **envp)
 {
-	char	*path;
+	int		status;
 
-	path = ft_strjoin("/home/etienne/Bureau/minishell/builtins/", av[0]);
-	if (execve(path, av, NULL) == FAILURE)
+	(void)envp;
+	status = 0;
+	if (ft_strequ(av[0], "exit") == TRUE)
 	{
-		ft_strdel(&path);
+		if (av[1] != NULL)
+			status = ft_atoi(av[1]);
+		ft_exit(status);
+	}
+	else
 		return (FAILURE);
-	}
-	ft_strdel(&path);
 	return (SUCCESS);
 }
 
-static int	ft_is_builtin(char *builtin)
+static int	ft_exec_command(char **av, char **envp)
 {
-	if (ft_strequ(builtin, "exit") == TRUE)
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
-static int	ft_exec_command(char **av)
-{
-	if (ft_is_builtin(av[0]) == TRUE)
+	if (ft_exec_builtin(av, envp) == FAILURE)
 	{
-		if (ft_exec_builtin(av) == FAILURE)
-			return (FAILURE);
-	}
-	else
-	{
-		if (ft_exec_bin(av) == FAILURE)
+		if (ft_exec_bin(av, envp) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);
 }
 
-int			main(void)
+int			main(int ac, char **av, char **envp)
 {
-	char	**av;
+	char	**tab;
 
-	av = NULL;
+	(void)ac;
+	(void)av;
+	tab = NULL;
 	while (1)
 	{
 		ft_putstr("$> ");
-		if (ft_get_command(&av) == FALSE)
+		if (ft_get_command(&tab) == FALSE)
 			return (EXIT_FAILURE);
-		if (ft_exec_command(av) == FAILURE)
+		if (ft_exec_command(tab, envp) == FAILURE)
 		{
-			ft_printf("minishell: command not found: %s\n", av[0]);
+			ft_printf("minishell: command not found: %s\n", tab[0]);
 			exit(EXIT_FAILURE);
 		}
-		ft_free_tab(av);
+		ft_free_tab(tab);
 	}
 	return (EXIT_SUCCESS);
 }

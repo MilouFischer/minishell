@@ -5,6 +5,6 @@
 # include	<sys/wait.h>
 # include	"libft.h"
 
-void	ft_exit(int status);
+void		ft_exit(int status);
 
 #endif
