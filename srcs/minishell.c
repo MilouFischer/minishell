@@ -82,6 +82,8 @@ static int	ft_exec_builtin(char **av, char **envp)
 			status = ft_atoi(av[1]);
 		ft_exit(status);
 	}
+	else if (ft_strequ(av[0], "echo") == TRUE)
+		ft_echo(av + 1);
 	else
 		return (FAILURE);
 	return (SUCCESS);
