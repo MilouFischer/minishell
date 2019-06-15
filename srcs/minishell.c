@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 13:41:48 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/15 16:20:02 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,10 @@ static int	ft_exec_bin(char **av, char **envp)
 	return (SUCCESS);
 }
 
-static int	ft_exec_builtin(char **av, char **envp)
+static int	ft_exec_builtin(char **av, t_list *lst)
 {
 	int		status;
 
-	(void)envp;
 	status = 0;
 	if (ft_strequ(av[0], "exit") == TRUE)
 	{
@@ -114,17 +113,19 @@ static int	ft_exec_builtin(char **av, char **envp)
 	else if (ft_strequ(av[0], "echo") == TRUE)
 		ft_echo(av + 1);
 	else if (ft_strequ(av[0], "cd") == TRUE)
-		cd_blt(av + 1);
+		cd_blt(av + 1, lst);
+	else if (ft_strequ(av[0], "printenv") == TRUE)
+		printenv_blt(av + 1, lst);
 	else
 		return (FAILURE);
 	return (SUCCESS);
 }
 
-static int	ft_exec_command(char **av, char **envp)
+static int	ft_exec_command(char **av, char **envp, t_list *lst)
 {
 	if (*av == NULL)
 		return (SUCCESS);
-	if (ft_exec_builtin(av, envp) == FAILURE)
+	if (ft_exec_builtin(av, lst) == FAILURE)
 	{
 		if (ft_exec_bin(av, envp) == FAILURE)
 			return (FAILURE);
@@ -135,9 +136,13 @@ static int	ft_exec_command(char **av, char **envp)
 int			main(int ac, char **av, char **envp)
 {
 	char	**tab;
+	t_list	*lst;
 
 	(void)ac;
 	(void)av;
+	lst = NULL;
+	ft_bzero(&lst, sizeof(lst));
+	get_env_lst(envp, &lst);
 	while (1)
 	{
 		tab = NULL;
@@ -147,7 +152,7 @@ int			main(int ac, char **av, char **envp)
 			ft_free_tab(tab);
 			return (EXIT_FAILURE);
 		}
-		if (ft_exec_command(tab, envp) == FAILURE)
+		if (ft_exec_command(tab, envp, lst) == FAILURE)
 		{
 			ft_printf("minishell: command not found: %s\n", tab[0]);
 			ft_free_tab(tab);
