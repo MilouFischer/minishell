@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
+/*   Updated: 2019/06/15 10:57:53 by efischer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int		ft_check_arg(char *arg)
@@ -7,7 +19,7 @@ static int		ft_check_arg(char *arg)
 	i = 1;
 	while (arg[i] != '\0')
 	{
-		if (arg[i] != 'n' && arg[i] != 'e' && arg[i] != 'E')
+		if (arg[i] != 'n')
 			return (FALSE);
 		i++;
 	}
@@ -16,23 +28,12 @@ static int		ft_check_arg(char *arg)
 
 static void		ft_process_av(char **av, size_t *index, uint8_t *flags)
 {
-	size_t	i;
-
-	i = 0;
 	while (av[*index] != NULL && av[*index][0] == '-')
 	{
 		if (ft_check_arg(av[*index]) == FALSE)
 			return ;
-		while (av[*index][i] != '\0')
-		{
-			if (av[*index][i] == 'n')
-				*flags |= ECHO_N;
-			if (av[*index][i] == 'e')
-				*flags |= ECHO_E;
-			if (av[*index][i] == 'E')
-				*flags &= ~ECHO_E;
-			i++;
-		}
+		if (ft_strchr(av[*index], 'n') != NULL)
+			*flags |= ECHO_N;
 		(*index)++;
 	}
 }

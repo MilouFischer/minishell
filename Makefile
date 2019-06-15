@@ -26,6 +26,7 @@ COMPILE += $(CC) -c
 SRCS += minishell.c
 SRCS += ft_exit.c
 SRCS += ft_echo.c
+SRCS += cd_blt.c
 
 #=====================================OBJS======================================
 

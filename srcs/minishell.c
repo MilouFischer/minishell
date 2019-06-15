@@ -1,4 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
+/*   Updated: 2019/06/15 12:38:27 by efischer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+static void	ft_process_tilde(char **arg)
+{
+	if (ft_strequ(*arg, "~") == TRUE)
+	{
+		ft_strdel(arg);
+		*arg = ft_strdup(getenv("HOME"));
+	}
+	else if (ft_strequ(*arg, "~+") == TRUE)
+	{
+		ft_strdel(arg);
+		*arg = ft_strdup(getenv("PWD"));
+	}
+	else if (ft_strequ(*arg, "~-") == TRUE)
+	{
+		ft_strdel(arg);
+		*arg = ft_strdup(getenv("OLDPWD"));
+	}
+}
 
 static void	ft_check_expansion(char **av)
 {
@@ -8,11 +39,8 @@ static void	ft_check_expansion(char **av)
 	i = 0;
 	while (av[i] != NULL)
 	{
-		if (ft_strequ(av[i], "~") == TRUE)
-		{
-			ft_strdel(&av[i]);
-			av[i] = ft_strdup(getenv("HOME"));
-		}
+		if (av[i][0] == '~')
+			ft_process_tilde(&av[i]);
 		else if (av[i][0] == '$')
 		{
 			tmp = av[i];
@@ -84,6 +112,8 @@ static int	ft_exec_builtin(char **av, char **envp)
 	}
 	else if (ft_strequ(av[0], "echo") == TRUE)
 		ft_echo(av + 1);
+	else if (ft_strequ(av[0], "cd") == TRUE)
+		cd_blt(av + 1);
 	else
 		return (FAILURE);
 	return (SUCCESS);
@@ -91,6 +121,8 @@ static int	ft_exec_builtin(char **av, char **envp)
 
 static int	ft_exec_command(char **av, char **envp)
 {
+	if (*av == NULL)
+		return (SUCCESS);
 	if (ft_exec_builtin(av, envp) == FAILURE)
 	{
 		if (ft_exec_bin(av, envp) == FAILURE)
@@ -105,9 +137,9 @@ int			main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	tab = NULL;
 	while (1)
 	{
+		tab = NULL;
 		ft_putstr("$> ");
 		if (ft_get_command(&tab) == FALSE)
 			return (EXIT_FAILURE);

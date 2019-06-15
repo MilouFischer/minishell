@@ -6,10 +6,11 @@
 # include	<stdint.h>
 # include	"libft.h"
 
-# define ECHO_N	0x01
-# define ECHO_E 0x02
+# define ECHO_N		0x01
+# define BUF_SIZE	256
 
 void	ft_exit(int status);
 int		ft_echo(char **av);
+int		cd_blt(char **av);
 
 #endif
