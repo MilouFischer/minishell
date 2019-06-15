@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 12:00:28 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 12:47:28 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/15 13:34:22 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int		cd_blt(char **av)
 	{
 		getcwd(buf, BUF_SIZE);
 		path = ft_asprintf("%s/%s", buf, *av);
+//		ft_check_path_access(path);
 		chdir(path);
+		ft_strdel(&path);
 	}
 	return (0);
 }

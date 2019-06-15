@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 12:38:27 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/15 13:41:48 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static int	ft_exec_builtin(char **av, char **envp)
 	{
 		if (av[1] != NULL)
 			status = ft_atoi(av[1]);
+		ft_free_tab(av);
 		ft_exit(status);
 	}
 	else if (ft_strequ(av[0], "echo") == TRUE)
@@ -142,10 +143,14 @@ int			main(int ac, char **av, char **envp)
 		tab = NULL;
 		ft_putstr("$> ");
 		if (ft_get_command(&tab) == FALSE)
+		{
+			ft_free_tab(tab);
 			return (EXIT_FAILURE);
+		}
 		if (ft_exec_command(tab, envp) == FAILURE)
 		{
 			ft_printf("minishell: command not found: %s\n", tab[0]);
+			ft_free_tab(tab);
 			exit(EXIT_FAILURE);
 		}
 		ft_free_tab(tab);
