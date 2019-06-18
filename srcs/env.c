@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 15:25:50 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 16:08:42 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/18 13:18:07 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,4 @@ t_list	*find_env(char *arg, t_list *lst)
 		lst = lst->next;
 	}
 	return (lst);
-}
-
-void	setenv_blt(char *name, char *value, t_list *lst)
-{
-	t_list *tmp;
-
-	tmp = find_env(name, lst);
-	if (tmp != NULL)
-	{
-		ft_strdel(&((t_env*)(tmp->content))->value);
-		((t_env*)(tmp->content))->value = ft_strdup(value);
-	}
 }

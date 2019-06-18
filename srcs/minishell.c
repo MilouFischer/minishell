@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 16:20:02 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/18 14:26:15 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int	ft_exec_builtin(char **av, t_list *lst)
 		if (av[1] != NULL)
 			status = ft_atoi(av[1]);
 		ft_free_tab(av);
-		ft_exit(status);
+		ft_exit(status, lst);
 	}
 	else if (ft_strequ(av[0], "echo") == TRUE)
 		ft_echo(av + 1);
