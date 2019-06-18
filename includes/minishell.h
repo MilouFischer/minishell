@@ -22,5 +22,8 @@ int		cd_blt(char **av, t_list *lst);
 t_list	*find_env(char *arg, t_list *lst);
 void	get_env_lst(char **envp, t_list **lst);
 void	printenv_blt(char **av, t_list *lst);
+void	get_content_to_print(t_list *lst, t_list **elem);
+char	*get_content_to_tab(t_list *lst);
+void	free_env(void *content);
 
 #endif

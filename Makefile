@@ -29,6 +29,7 @@ SRCS += ft_echo.c
 SRCS += cd_blt.c
 SRCS += env.c
 SRCS += printenv_blt.c
+SRCS += list_functions.c
 
 #=====================================OBJS======================================
 

@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/18 14:26:15 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/18 15:22:22 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,12 @@ static int	ft_get_command(char ***av)
 	return (TRUE);
 }
 
-static int	ft_exec_bin(char **av, char **envp)
+static int	ft_exec_bin(char **av, t_list *lst)
 {
 	char	*path;
 	pid_t	pid;
 	int		status;
+	char	**env;
 
 	status = 0;
 	pid = fork();
@@ -87,8 +88,10 @@ static int	ft_exec_bin(char **av, char **envp)
 		wait(&status);
 	if (pid == 0)
 	{
+		env = ft_lst_to_char_tab(lst, get_content_to_tab);
+		ft_lstfree(lst, free_env);
 		path = ft_strjoin("/bin/", av[0]);
-		if (execve(path, av, envp) == FAILURE)
+		if (execve(path, av, env) == FAILURE)
 		{
 			ft_strdel(&path);
 			return (FAILURE);
@@ -121,21 +124,40 @@ static int	ft_exec_builtin(char **av, t_list *lst)
 	return (SUCCESS);
 }
 
-static int	ft_exec_command(char **av, char **envp, t_list *lst)
+static int	ft_exec_command(char **av, t_list *lst)
 {
 	if (*av == NULL)
 		return (SUCCESS);
 	if (ft_exec_builtin(av, lst) == FAILURE)
 	{
-		if (ft_exec_bin(av, envp) == FAILURE)
+		if (ft_exec_bin(av, lst) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);
 }
 
-int			main(int ac, char **av, char **envp)
+static int	process_command(t_list *lst)
 {
 	char	**tab;
+
+	tab = NULL;
+	if (ft_get_command(&tab) == FALSE)
+	{
+		ft_free_tab(tab);
+		return (FAILURE);
+	}
+	if (ft_exec_command(tab, lst) == FAILURE)
+	{
+		ft_printf("minishell: command not found: %s\n", tab[0]);
+		ft_free_tab(tab);
+		exit(EXIT_FAILURE);
+	}
+	ft_free_tab(tab);
+	return (SUCCESS);
+}
+
+int			main(int ac, char **av, char **envp)
+{
 	t_list	*lst;
 
 	(void)ac;
@@ -145,20 +167,9 @@ int			main(int ac, char **av, char **envp)
 	get_env_lst(envp, &lst);
 	while (1)
 	{
-		tab = NULL;
 		ft_putstr("$> ");
-		if (ft_get_command(&tab) == FALSE)
-		{
-			ft_free_tab(tab);
+		if (process_command(lst) == FAILURE)
 			return (EXIT_FAILURE);
-		}
-		if (ft_exec_command(tab, envp, lst) == FAILURE)
-		{
-			ft_printf("minishell: command not found: %s\n", tab[0]);
-			ft_free_tab(tab);
-			exit(EXIT_FAILURE);
-		}
-		ft_free_tab(tab);
 	}
 	return (EXIT_SUCCESS);
 }
