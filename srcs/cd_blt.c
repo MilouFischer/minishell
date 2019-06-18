@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 12:00:28 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 16:31:45 by efischer         ###   ########.fr       */
+/*   Updated: 2019/06/18 10:50:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,29 @@ int		cd_blt(char **av, t_list *lst)
 	uint8_t	flags;
 	char	*path;
 	char	buf[BUF_SIZE];
-	t_list	*tmp;
+//	t_list	*tmp;
 
+	(void)lst;
 	flags = 0;
 	getcwd(buf, BUF_SIZE);
 	ft_putendl(buf);
 	if (*av != NULL && *av[0] == '-')
 		ft_check_flags(&av, &flags);
-	if (*av == '\0')
+/*	if (*av == '\0')
 	{
 	}
 	else if (ft_strequ(*av, "-") == TRUE)
 	{
 	}
-	else
+*/	else
 	{
 		path = ft_asprintf("%s/%s", buf, *av);
 		if (ft_check_path_access(path) == FAILURE)
 			ft_putendl("cd: file not found");
-		else
+	/*	else
 		{
 		}
-		ft_strdel(&path);
+	*/	ft_strdel(&path);
 	}
 	return (0);
 }
