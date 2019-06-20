@@ -7,7 +7,6 @@
 # include	"libft.h"
 
 # define ECHO_N		0x01
-# define BUF_SIZE	256
 
 typedef struct	s_env
 {
