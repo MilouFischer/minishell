@@ -23,7 +23,8 @@ void			printenv_blt(char **av, t_list *lst)
 		while (*av != NULL)
 		{
 			tmp = find_env(*av++, lst);
-			ft_putendl(((t_env*)(tmp->content))->value);
+			if (tmp != NULL)
+				ft_putendl(((t_env*)(tmp->content))->value);
 		}
 	}
 }

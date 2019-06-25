@@ -21,12 +21,12 @@ static int	exec(t_list *lst, char **av)
 
 	i = 0;
 	path = NULL;
+	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	while (lst != NULL
 	&& ft_strequ(((t_env*)(lst->content))->name, "PATH") == FALSE)
 		lst = lst->next;
 	if (lst == NULL)
 		return (FAILURE);
-	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	path_tab = ft_strsplit(((t_env*)(lst->content))->value, ':');
 	while (path_tab[i] != NULL)
 	{
