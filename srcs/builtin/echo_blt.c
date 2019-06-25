@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   echo_blt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -55,7 +55,7 @@ static void		ft_print_arg(char **av, size_t i, uint8_t flags)
 	ft_strdel(&out);
 }
 
-int				ft_echo(char **av)
+int				echo_blt(char **av)
 {
 	uint8_t		flags;
 	size_t	i;

@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-static void	ft_check_flags(char ***av, uint8_t *flags)
+/*static void	ft_check_flags(char ***av, uint8_t *flags)
 {
 	(void)flags;
 	while (**av[0] == '-' && ft_strlen(**av) > 1)
 	{
 		(*av)++;
 	}
-}
+}*/
 
 static int	ft_check_path_access(char *path)
 {
@@ -52,34 +52,33 @@ static int	ft_check_path_access(char *path)
 	return (SUCCESS);
 }
 
-int		cd_blt(char **av, t_list *lst)
+int		cd_blt(char **av, t_list **lst)
 {
-	uint8_t	flags;
 	char	*path;
 	char	buf[BUF_SIZE];
-//	t_list	*tmp;
 
-	(void)lst;
-	flags = 0;
 	getcwd(buf, BUF_SIZE);
-	ft_putendl(buf);
-	if (*av != NULL && *av[0] == '-')
-		ft_check_flags(&av, &flags);
-/*	if (*av == '\0')
+	if (*av == NULL)
 	{
+		setenv_blt("PWD", getenv("HOME"), lst, 1);
+		setenv_blt("OLDPWD", buf, lst, 1);
 	}
 	else if (ft_strequ(*av, "-") == TRUE)
 	{
+		setenv_blt("PWD", getenv("OLDPWD"), lst, 1);
+		setenv_blt("OLDPWD", buf, lst, 1);
 	}
-*/	else
+	else
 	{
 		path = ft_asprintf("%s/%s", buf, *av);
 		if (ft_check_path_access(path) == FAILURE)
 			ft_putendl("cd: file not found");
-	/*	else
+		else
 		{
+			setenv_blt("PWD", path, lst, 1);
+			setenv_blt("OLDPWD", buf, lst, 1);
 		}
-	*/	ft_strdel(&path);
+		ft_strdel(&path);
 	}
 	return (0);
 }

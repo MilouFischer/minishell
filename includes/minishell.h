@@ -12,17 +12,20 @@ typedef struct	s_env
 {
 	char		*name;
 	char		*value;
-	char		*all;
 }				t_env;
 
-void	ft_exit(int status, t_list *env);
-int		ft_echo(char **av);
-int		cd_blt(char **av, t_list *lst);
+void	exit_blt(int status, t_list *env);
+int		echo_blt(char **av);
+int		cd_blt(char **av, t_list **lst);
 t_list	*find_env(char *arg, t_list *lst);
 void	get_env_lst(char **envp, t_list **lst);
 void	printenv_blt(char **av, t_list *lst);
 void	get_content_to_print(t_list *lst, t_list **elem);
 char	*get_content_to_tab(t_list *lst);
 void	free_env(void *content);
+int		setenv_blt(const char *name, const char *val, t_list **lst,
+			int overwrite);
+void	pwd_blt(t_list *lst);
+int		ft_get_command(char ***av);
 
 #endif

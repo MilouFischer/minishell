@@ -24,12 +24,15 @@ COMPILE += $(CC) -c
 #=====================================SRCS======================================
 
 SRCS += minishell.c
-SRCS += ft_exit.c
-SRCS += ft_echo.c
+SRCS += exit_blt.c
+SRCS += echo_blt.c
 SRCS += cd_blt.c
-SRCS += env.c
+SRCS += manage_env.c
 SRCS += printenv_blt.c
 SRCS += list_functions.c
+SRCS += setenv_blt.c
+SRCS += pwd_blt.c
+SRCS += get_command.c
 
 #=====================================OBJS======================================
 
@@ -38,6 +41,7 @@ OBJS += $(patsubst %.c, $(PATHO)%.o, $(SRCS))
 LIBFT += $(PATHLIB)libft.a
 
 vpath %.c srcs/
+vpath %.c srcs/builtin/
 vpath %.h $(PATHI)
 
 all: $(NAME)
