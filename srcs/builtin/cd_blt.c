@@ -21,7 +21,7 @@
 	}
 }*/
 
-static int	ft_check_path_access(char *path)
+static int	check_access(char *path)
 {
 	char	**tab;
 	char	*tmp_path;
@@ -43,7 +43,7 @@ static int	ft_check_path_access(char *path)
 		{
 			ft_strdel(&tmp_path);
 			ft_free_tab(tab);
-			ft_putendl_fd("cd: permission denied", 2);
+			ft_putendl_fd("cd: can not access file", 2);
 			return (FAILURE);
 		}
 		i++;
@@ -70,6 +70,11 @@ static int	check_dot(char *arg)
 	return (FALSE);
 }
 
+/*static int	clean_path(char **path)
+{
+
+}*/
+
 static char	*ft_getenv(char *env_name, t_list *lst)
 {
 	if (env_name == NULL || lst == NULL)
@@ -87,30 +92,21 @@ int			cd_blt(char **av, t_list **lst)
 {
 	char	*path;
 	char	*pwd;
-	char	buf[BUF_SIZE];
+	char	buf[PATH_MAX];
 
 	path = NULL;
 	if (*av == NULL && ft_getenv("HOME", *lst) == NULL)
 		return (FAILURE);
-	getcwd(buf, BUF_SIZE);
+	getcwd(buf, PATH_MAX);
+	ft_putendl(buf);
 	if (*av == NULL)
 		path = ft_strdup(ft_getenv("HOME", *lst));
-	else if (av[0][0] == '/')
-		path = ft_strdup(av[0]);
 	else if (ft_strequ(av[0], "-") == TRUE)
 		path = ft_strdup(ft_getenv("OLDPWD", *lst));
 	else if (check_dot(av[0]) == TRUE)
-	{
-		if (ft_check_path_access(av[0]) == FAILURE)
-			return (FAILURE);
-		if (chdir(av[0]) == FAILURE)
-		{
-			ft_putendl_fd("cd: file not found", 2);
-			return (FAILURE);
-		}
-		setenv_blt("PWD", av[0], lst, 1);
-		setenv_blt("OLDPWD", buf, lst, 1);
-	}
+		path = ft_strdup(av[0]);
+	else if (av[0][0] == '/')
+		path = ft_strdup(av[0]);
 	else
 	{
 		pwd = ft_strdup(ft_getenv("PWD", *lst));
@@ -118,15 +114,20 @@ int			cd_blt(char **av, t_list **lst)
 			pwd = ft_join_free(pwd, "/", 1);
 		path = ft_join_free(pwd, av[0], 1);
 	}
-	if (path != NULL)
+//	if (clean_path(&path) == FAILURE)
+//		return (FAILURE);
+	if (check_access(path) == FAILURE)
 	{
-		if (ft_check_path_access(path) == FAILURE)
-			return (FAILURE);
-		if (chdir(path) == FAILURE)
-		{
-			ft_putendl_fd("cd: file not found", 2);
-			return (FAILURE);
-		}
+		ft_putendl_fd("access fail", 2);
+		return (FAILURE);
+	}
+	if (chdir(path) == FAILURE)
+	{
+		ft_putendl_fd("chdir fail", 2);
+		return (FAILURE);
+	}
+	else
+	{
 		setenv_blt("PWD", path, lst, 1);
 		setenv_blt("OLDPWD", buf, lst, 1);
 	}
