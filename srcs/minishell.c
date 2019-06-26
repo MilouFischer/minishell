@@ -101,6 +101,7 @@ static int	ft_exec_command(char **av, t_list **lst)
 static int	process_command(t_list **lst)
 {
 	char	**tab;
+	char	*error;
 
 	tab = NULL;
 	if (ft_get_command(&tab) == FALSE)
@@ -110,7 +111,9 @@ static int	process_command(t_list **lst)
 	}
 	if (ft_exec_command(tab, lst) == FAILURE)
 	{
-		ft_printf("minishell: command not found: %s\n", tab[0]);
+		error = ft_asprintf("minishell: command not found: %s\n", tab[0]);
+		ft_putstr_fd(error, 2);
+		ft_strdel(&error);
 		ft_free_tab(tab);
 		exit(EXIT_FAILURE);
 	}
