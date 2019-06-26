@@ -53,27 +53,30 @@ static int	check_access(char *path)
 	return (SUCCESS);
 }
 
-static int	check_dot(char *arg)
+static void	clean_path(char **path)
 {
-	if (arg == NULL)
-		return (FALSE);
-	if (arg[0] == '.')
+	char	**tab;
+	char	*clean_path;
+	size_t	i;
+
+	i = 0;
+	clean_path = NULL;
+	tab = ft_strsplit(*path, '/');
+	while (tab[i] != NULL)
 	{
-		if (arg[1] == '\0' || arg[1] == '/')
-			return (TRUE);
-		if (arg[1] == '.')
+		if (ft_strequ(tab[i], ".") == FALSE && ft_strequ(tab[i], "..") == FALSE
+			&& ft_strequ(tab[i + 1], "..") == FALSE)
 		{
-			if (arg[2] == '\0' || arg[2] == '/')
-				return (TRUE);
+			clean_path = ft_join_free(clean_path, "/", 1);
+			clean_path = ft_join_free(clean_path, tab[i], 1);
 		}
+		i++;
 	}
-	return (FALSE);
+	ft_strdel(path);
+	*path = ft_strdup(clean_path);
+	ft_strdel(&clean_path);
+	ft_free_tab(tab);
 }
-
-/*static int	clean_path(char **path)
-{
-
-}*/
 
 static char	*ft_getenv(char *env_name, t_list *lst)
 {
@@ -88,34 +91,40 @@ static char	*ft_getenv(char *env_name, t_list *lst)
 	return (NULL);
 }
 
-int			cd_blt(char **av, t_list **lst)
+static char	*get_path(char **av, t_list *lst)
 {
 	char	*path;
 	char	*pwd;
-	char	buf[PATH_MAX];
 
 	path = NULL;
-	if (*av == NULL && ft_getenv("HOME", *lst) == NULL)
-		return (FAILURE);
-	getcwd(buf, PATH_MAX);
-	ft_putendl(buf);
+	if (*av == NULL && ft_getenv("HOME", lst) == NULL)
+		return (NULL);
 	if (*av == NULL)
-		path = ft_strdup(ft_getenv("HOME", *lst));
+		path = ft_strdup(ft_getenv("HOME", lst));
 	else if (ft_strequ(av[0], "-") == TRUE)
-		path = ft_strdup(ft_getenv("OLDPWD", *lst));
-	else if (check_dot(av[0]) == TRUE)
-		path = ft_strdup(av[0]);
+		path = ft_strdup(ft_getenv("OLDPWD", lst));
 	else if (av[0][0] == '/')
 		path = ft_strdup(av[0]);
 	else
 	{
-		pwd = ft_strdup(ft_getenv("PWD", *lst));
+		pwd = ft_strdup(ft_getenv("PWD", lst));
 		if (pwd[ft_strlen(pwd)] != '/')
 			pwd = ft_join_free(pwd, "/", 1);
 		path = ft_join_free(pwd, av[0], 1);
 	}
-//	if (clean_path(&path) == FAILURE)
-//		return (FAILURE);
+	return (path);
+}
+
+int			cd_blt(char **av, t_list **lst)
+{
+	char	*path;
+	char	buf[PATH_MAX];
+
+	getcwd(buf, PATH_MAX);
+	path = get_path(av, *lst);
+	if (path == NULL)
+		return (FAILURE);
+	clean_path(&path);
 	if (check_access(path) == FAILURE)
 	{
 		ft_putendl_fd("access fail", 2);
@@ -126,11 +135,8 @@ int			cd_blt(char **av, t_list **lst)
 		ft_putendl_fd("chdir fail", 2);
 		return (FAILURE);
 	}
-	else
-	{
-		setenv_blt("PWD", path, lst, 1);
-		setenv_blt("OLDPWD", buf, lst, 1);
-	}
+	setenv_blt("PWD", path, lst, 1);
+	setenv_blt("OLDPWD", buf, lst, 1);
 	ft_strdel(&path);
 	return (SUCCESS);
 }

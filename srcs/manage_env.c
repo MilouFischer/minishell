@@ -11,8 +11,14 @@ void	get_env_lst(char **envp, t_list **lst)
 	{
 		ft_bzero(&env, sizeof(env));
 		tab = ft_strsplit(envp[i], '=');
-		env.name = ft_strdup(tab[0]);
-		env.value = ft_strdup(tab[1]);
+		env.name = ft_strdup(*tab++);
+		while (*tab != NULL)
+		{
+			env.value = ft_join_free(env.value, *tab, 1);
+			tab++;
+			if (*tab != NULL)
+				env.value = ft_join_free(env.value, "=", 1);
+		}
 		ft_free_tab(tab);
 		ft_lstaddend(lst, ft_lstnew(&env, sizeof(env)));
 		i++;
