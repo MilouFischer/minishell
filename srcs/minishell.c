@@ -115,7 +115,7 @@ static int	process_command(t_list **lst)
 		ft_putstr_fd(error, 2);
 		ft_strdel(&error);
 		ft_free_tab(tab);
-		exit(EXIT_FAILURE);
+		exit_blt(EXIT_FAILURE, *lst);
 	}
 	ft_free_tab(tab);
 	return (SUCCESS);

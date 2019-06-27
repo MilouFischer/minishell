@@ -35,7 +35,10 @@ int				setenv_blt(const char *name, const char *val, t_list **lst,
 	if (*lst != NULL)
 	{
 		if (overwrite > 0)
+		{
+			ft_strdel(&((t_env*)((*lst)->content))->value);
 			((t_env*)((*lst)->content))->value = ft_strdup(val);
+		}
 	}
 	else
 		add_env(name, val, &head);
