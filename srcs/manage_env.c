@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+char	*ft_getenv(char *env_name, t_list *lst)
+{
+	if (env_name == NULL || lst == NULL)
+		return (NULL);
+	while (lst != NULL)
+	{
+		if (ft_strequ(((t_env*)(lst->content))->name, env_name) == TRUE)
+			return (((t_env*)(lst->content))->value);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
 void	get_env_lst(char **envp, t_list **lst)
 {
 	t_env	env;
@@ -27,7 +40,7 @@ void	get_env_lst(char **envp, t_list **lst)
 	}
 }
 
-t_list	*find_env(char *arg, t_list *lst)
+t_list	*find_env(const char *arg, t_list *lst)
 {
 	while (lst != NULL)
 	{

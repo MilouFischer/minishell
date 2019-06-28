@@ -81,6 +81,11 @@ static int	ft_exec_builtin(char **av, t_list **lst)
 		printenv_blt(av + 1, *lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
 		pwd_blt(*lst);
+	else if (ft_strequ(av[0], "unsetenv") == TRUE)
+	{
+		if (unsetenv_blt(av[1], lst) == FAILURE)
+			ft_putstr_fd("unsetenv fail", 2);
+	}
 	else
 		return (FAILURE);
 	return (SUCCESS);

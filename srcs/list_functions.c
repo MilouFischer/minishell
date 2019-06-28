@@ -32,8 +32,9 @@ char	*get_content_to_tab(t_list *lst)
 	return (tmp);
 }
 
-void	free_env(void *content)
+void	free_env(void *content, size_t content_size)
 {
+	(void)content_size;
 	ft_strdel(&((t_env*)content)->name);
 	ft_strdel(&((t_env*)content)->value);
 	free(content);

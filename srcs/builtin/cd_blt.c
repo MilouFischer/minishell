@@ -78,19 +78,6 @@ static void	clean_path(char **path)
 	ft_free_tab(tab);
 }
 
-static char	*ft_getenv(char *env_name, t_list *lst)
-{
-	if (env_name == NULL || lst == NULL)
-		return (NULL);
-	while (lst != NULL)
-	{
-		if (ft_strequ(((t_env*)(lst->content))->name, env_name) == TRUE)
-			return (((t_env*)(lst->content))->value);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
 static char	*get_path(char **av, t_list *lst)
 {
 	char	*path;
