@@ -16,6 +16,8 @@ void			printenv_blt(char **av, t_list *lst)
 {
 	t_list	*tmp;
 
+	if (lst == NULL)
+		return ;
 	if (*av == NULL)
 		ft_lstprint(lst, get_content_to_print);
 	else

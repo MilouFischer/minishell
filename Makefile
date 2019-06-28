@@ -34,6 +34,7 @@ SRCS += setenv_blt.c
 SRCS += pwd_blt.c
 SRCS += get_command.c
 SRCS += unsetenv_blt.c
+SRCS += env_blt.c
 
 #=====================================OBJS======================================
 

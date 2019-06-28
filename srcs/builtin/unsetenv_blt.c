@@ -4,7 +4,6 @@ int		unsetenv_blt(const char *name, t_list **lst)
 {
 	t_list	*head;
 	t_list	*del_env;
-	char	**tab;
 
 	head = *lst;
 	if (name == NULL)
@@ -17,8 +16,5 @@ int		unsetenv_blt(const char *name, t_list **lst)
 	(*lst)->next = del_env->next;
 	*lst = head;
 	ft_lstdelone(&del_env, free_env);
-	tab = ft_lst_to_char_tab(*lst, get_content_to_tab);
-	ft_print_tab(tab);
-	ft_putendl("YO");
 	return (SUCCESS);
 }

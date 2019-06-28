@@ -77,6 +77,8 @@ static int	ft_exec_builtin(char **av, t_list **lst)
 		echo_blt(av + 1);
 	else if (ft_strequ(av[0], "cd") == TRUE)
 		cd_blt(av + 1, lst);
+	else if (ft_strequ(av[0], "env") == TRUE)
+		env_blt(av + 1, *lst);
 	else if (ft_strequ(av[0], "printenv") == TRUE)
 		printenv_blt(av + 1, *lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
@@ -91,7 +93,7 @@ static int	ft_exec_builtin(char **av, t_list **lst)
 	return (SUCCESS);
 }
 
-static int	ft_exec_command(char **av, t_list **lst)
+int			exec_command(char **av, t_list **lst)
 {
 	if (*av == NULL)
 		return (SUCCESS);
@@ -114,7 +116,7 @@ static int	process_command(t_list **lst)
 		ft_free_tab(tab);
 		return (FAILURE);
 	}
-	if (ft_exec_command(tab, lst) == FAILURE)
+	if (exec_command(tab, lst) == FAILURE)
 	{
 		error = ft_asprintf("minishell: command not found: %s\n", tab[0]);
 		ft_putstr_fd(error, 2);

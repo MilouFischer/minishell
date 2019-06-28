@@ -29,5 +29,7 @@ void	pwd_blt(t_list *lst);
 int		ft_get_command(char ***av);
 char	*ft_getenv(char *env_name, t_list *lst);
 int		unsetenv_blt(const char *name, t_list **lst);
+void	env_blt(char **av, t_list *lst);
+int		exec_command(char **av, t_list **lst);
 
 #endif
