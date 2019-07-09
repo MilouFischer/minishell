@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printenv_blt.c                                     :+:      :+:    :+:   */
+/*   ft_lstcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/15 16:13:22 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 15:03:18 by efischer         ###   ########.fr       */
+/*   Created: 2019/07/09 14:06:58 by efischer          #+#    #+#             */
+/*   Updated: 2019/07/09 14:46:35 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "list.h"
 
-void			printenv_blt(char **av, t_list *lst)
+t_list	*ft_lstcpy(t_list *lst, t_list *(*f)(t_list*))
 {
-	t_list	*tmp;
+	t_list	*new;
 
-	if (lst == NULL)
-		return ;
-	if (av != NULL && *av == NULL)
-		ft_lstprint(lst, get_content_to_print);
-	else
-	{
-		while (av != NULL && *av != NULL)
-		{
-			tmp = find_env(*av++, lst);
-			if (tmp != NULL)
-				ft_putendl(((t_env*)(tmp->content))->value);
-		}
-	}
+	if (f == NULL)
+		return (NULL);
+	new = f(lst);
+	return (new);
 }

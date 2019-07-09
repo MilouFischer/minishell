@@ -6,11 +6,11 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 13:16:33 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/09 15:04:22 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 static int	check_flag_i(char ***av)
 {
@@ -63,19 +63,38 @@ static void	change_env(char ***av, t_list **lst)
 	ft_putendl(**av);
 }
 
+#include <assert.h>
+
+static void	get_lst_cpy(t_list **local_lst, t_list *lst)
+{
+	t_list	*new;
+
+	new = NULL;
+	while (lst != NULL)
+	{
+		new = ft_lstcpy(lst, cpy_lst);
+		ft_lstaddend(local_lst, new);
+		lst = lst->next;
+	}
+}
+
 void		env_blt(char **av, t_list *lst)
 {
 	char	*tab[2];
+	t_list	*local_lst;
 
+	local_lst = NULL;
+	get_lst_cpy(&local_lst, lst);
+	printenv_blt(NULL, lst);
 	if (check_flag_i(&av) == TRUE)
-		lst = NULL;
-	change_env(&av, &lst);
+		local_lst = NULL;
+	change_env(&av, &local_lst);
 	if (*av != NULL)
-		exec_command(av, &lst);
+		exec_command(av, &local_lst);
 	else
 	{
 		tab[0] = "printenv";
 		tab[1] = NULL;
-		exec_command(tab, &lst);
+		exec_command(tab, &local_lst);
 	}
 }
