@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setenv_blt.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
+/*   Updated: 2019/07/09 13:06:35 by efischer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_list	*check_name(const char *name, t_list *lst)
@@ -13,11 +25,11 @@ static t_list	*check_name(const char *name, t_list *lst)
 
 static void		add_env(const char *name, const char *val, t_list **lst)
 {
-	t_env	*env;
+	t_env	env;
 
 	ft_bzero(&env, sizeof(env));
-	env->name = ft_strdup(name);
-	env->value = ft_strdup(val);
+	env.name = ft_strdup(name);
+	env.value = ft_strdup(val);
 	ft_lstaddend(lst, ft_lstnew(&env, sizeof(env)));
 }
 
@@ -27,7 +39,7 @@ int				setenv_blt(const char *name, const char *val, t_list **lst,
 	t_list	*head;
 
 	head = *lst;
-	if (name == NULL || *lst == NULL)
+	if (name == NULL || lst == NULL)
 		return (FAILURE);
 	if (ft_strchr(name, '=') != NULL)
 		return (FAILURE);

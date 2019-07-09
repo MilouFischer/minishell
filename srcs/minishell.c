@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/18 15:22:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/09 13:15:55 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,6 @@ static int	ft_exec_builtin(char **av, t_list **lst)
 		printenv_blt(av + 1, *lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
 		pwd_blt(*lst);
-/*	else if (ft_strequ(av[0], "setenv") == TRUE)
-	{
-		if (av[1] == NULL)
-			setenv_blt(av[1], NULL, lst, 1);
-		else
-			setenv_blt(av[1], av[2], lst, 1);
-	}*/
 	else if (ft_strequ(av[0], "unsetenv") == TRUE)
 	{
 		if (unsetenv_blt(av[1], lst) == FAILURE)

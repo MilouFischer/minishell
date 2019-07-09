@@ -1,54 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_blt.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
+/*   Updated: 2019/07/09 13:16:33 by efischer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "minishell.h"
 
-static int	check_flag_i(char **av)
+static int	check_flag_i(char ***av)
 {
 	char	*error;
 	size_t	i;
 
-	if (av == NULL || *av == NULL || (*av)[0] != '-')
+	if (*av == NULL || **av == NULL || (**av)[0] != '-')
 		return (FALSE);
-	while (*av != NULL && (*av)[0] == '-')
+	while (**av != NULL && (**av)[0] == '-')
 	{
 		i = 1;
-		while ((*av)[i] != '\0')
+		while ((**av)[i] != '\0')
 		{
-			if ((*av)[i] != 'i')
+			if ((**av)[i] != 'i')
 			{
-				error = ft_asprintf("env: invalid option -- '%c'", (*av)[i]);
+				error = ft_asprintf("env: invalid option -- '%c'", (**av)[i]);
 				ft_putstr_fd(error, 2);
 				ft_strdel(&error);
 				return (FALSE);
 			}
 			i++;
 		}
-		ft_strdel(av);
-		av++;
+		ft_strdel(*av);
+		(*av)++;
 	}
 	return (TRUE);
 }
 
-/*static void	change_env(char **av, t_list **lst)
+static void	get_new_env(char *str, t_list **lst)
 {
-	t_env	env;
+	char	*value;
+	char	*name;
 
-	while (*av != NULL && ft_strchr(*av, '=') != NULL)
+	value = ft_strchr(str, '=');
+	name = ft_strsub(str, 0, value - str);
+	value += 1;
+	setenv_blt(name, value, lst, 1);
+}
+
+static void	change_env(char ***av, t_list **lst)
+{
+	while (**av != NULL && ft_strchr(**av, '=') != NULL)
 	{
-		if ((*av)[0] == '=')
+		if ((**av)[0] == '=')
 			return ;
-		env = get_new_env(*av);
-		setenv_blt(env.name, env.value, lst, 1);
-		ft_strdel(av);
-		av++;
+		get_new_env(**av, lst);
+		ft_strdel(*av);
+		(*av)++;
 	}
-}*/
+	ft_putendl(**av);
+}
 
 void		env_blt(char **av, t_list *lst)
 {
 	char	*tab[2];
 
-	if (check_flag_i(av) == TRUE)
+	if (check_flag_i(&av) == TRUE)
 		lst = NULL;
-//	change_env(av, &lst);
+	change_env(&av, &lst);
 	if (*av != NULL)
 		exec_command(av, &lst);
 	else
