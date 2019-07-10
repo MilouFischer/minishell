@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/06/15 10:57:53 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/10 15:53:31 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ static void		ft_process_av(char **av, size_t *index, uint8_t *flags)
 	}
 }
 
-static void		ft_print_arg(char **av, size_t i, uint8_t flags)
+static void		ft_print_arg(char **av, size_t i)
 {
 	char	*out;
 
-	(void)flags;
 	out = NULL;
 	while (av[i] != NULL)
 	{
@@ -65,7 +64,7 @@ int				echo_blt(char **av)
 	if (av != NULL)
 	{
 		ft_process_av(av, &i, &flags);
-		ft_print_arg(av, i, flags);
+		ft_print_arg(av, i);
 	}
 	if ((flags & ECHO_N) == FALSE)
 		ft_putchar('\n');

@@ -31,7 +31,11 @@ char	*ft_getenv(char *env_name, t_list *lst);
 int		unsetenv_blt(const char *name, t_list **lst);
 void	env_blt(char **av, t_list *lst);
 int		exec_command(char **av, t_list **lst);
-t_list	*ft_lstcpy(t_list *lst, t_list *(*f)(t_list*));
 t_list	*cpy_lst(t_list	*lst);
+
+t_list	*ft_lstcpy(t_list *lst, t_list *(*f)(t_list*));
+size_t	ft_tablen(char **tab);
+char	**ft_tabjoin_free(char **tab1, char **tab2, size_t opt);
+char	**ft_join_tab_str_free(char **tab1, char *str, size_t opt);
 
 #endif
