@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/12 13:16:01 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/12 13:57:50 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,16 @@ static void	get_clean_path(char **path)
 
 	i = 0;
 	clean_path = NULL;
+	if (path == NULL || *path == NULL)
+		return ;
 	tab = ft_strsplit(*path, '/');
+	if (tab == NULL)
+		return ;
+	if (tab[i] == NULL)
+	{
+		clean_path = ft_join_free(clean_path, "/", 1);
+		return ;
+	}
 	index_tab = get_index_tab(tab);
 	while (tab[i] != NULL)
 	{
@@ -163,12 +172,15 @@ static char	*check_cdpath(char *dir_op, t_list *lst)
 {
 	char	**pathname;
 	char	*cdpath;
+	char	*curpath;
 
 	cdpath = ft_getenv("CDPATH", lst);
 	if (cdpath == NULL)
 		return (NULL);
 	pathname = ft_strsplit(cdpath, ':');
-	return (find_pathname(dir_op, pathname));
+	curpath = find_pathname(dir_op, pathname);
+	ft_free_tab(pathname);
+	return (curpath);
 }
 
 int		cd_blt(char **av, t_list **lst)
@@ -184,6 +196,8 @@ int		cd_blt(char **av, t_list **lst)
 		return (FAILURE);
 	else if (*av == NULL && ft_getenv("HOME", *lst) != NULL)
 		curpath = ft_strdup(ft_getenv("HOME", *lst));
+	else if (ft_strequ(*av, "-") == TRUE)
+		curpath = ft_strdup(ft_getenv("OLDPWD", *lst));
 	else if (*av != NULL && *av[0] == '/')
 		curpath = ft_strdup(*av);
 	else if (ft_strequ(*av, ".") || ft_strequ(*av, ".."))
