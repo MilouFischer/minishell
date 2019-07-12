@@ -7,7 +7,17 @@
 # include	"libft.h"
 
 # define ECHO_N		0x01
+# define EXIT		"exit"
+# define ECHO		"echo"
+# define CD			"cd"
+# define PWD		"pwd"
+# define ENV		"env"
+# define UNSETENV	"unsetenv"
+# define PRINTENV	"printenv"
+# define BUILTIN	EXIT, ECHO, CD, PWD, ENV, UNSETENV, PRINTENV
+# define NB_OF_BLT	7
 
+//typedef int		(t_builtin *)(char **av, t_list **env);
 typedef struct	s_env
 {
 	char		*name;
@@ -32,10 +42,5 @@ int		unsetenv_blt(const char *name, t_list **lst);
 void	env_blt(char **av, t_list *lst);
 int		exec_command(char **av, t_list **lst);
 t_list	*cpy_lst(t_list	*lst);
-
-t_list	*ft_lstcpy(t_list *lst, t_list *(*f)(t_list*));
-size_t	ft_tablen(char **tab);
-char	**ft_tabjoin_free(char **tab1, char **tab2, size_t opt);
-char	**ft_join_tab_str_free(char **tab1, char *str, size_t opt);
 
 #endif

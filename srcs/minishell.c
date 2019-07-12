@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 13:34:11 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/12 11:24:17 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int			main(int ac, char **av, char **envp)
 	get_env_lst(envp, &lst);
 	while (1)
 	{
-		ft_putstr("$> ");
+		ft_putstr_fd("$> ", 2);
 		if (process_command(&lst) == FAILURE)
 			return (EXIT_FAILURE);
 	}
