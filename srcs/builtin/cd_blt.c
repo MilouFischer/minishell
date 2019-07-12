@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/12 13:57:50 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/12 16:47:12 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	check_access(char *path)
 		{
 			ft_strdel(&tmp_path);
 			ft_free_tab(tab);
-			ft_putendl_fd("cd: can not access file", 2);
 			return (FAILURE);
 		}
 		i++;
@@ -110,7 +109,7 @@ static int	*get_index_tab(char **tab)
 	return (index_tab);
 }
 
-static void	get_clean_path(char **path)
+static char	*path_cleaning(char *path)
 {
 	char	**tab;
 	char	*clean_path;
@@ -118,17 +117,9 @@ static void	get_clean_path(char **path)
 	size_t	i;
 
 	i = 0;
-	clean_path = NULL;
-	if (path == NULL || *path == NULL)
-		return ;
-	tab = ft_strsplit(*path, '/');
+	tab = ft_strsplit(path, '/');
 	if (tab == NULL)
-		return ;
-	if (tab[i] == NULL)
-	{
-		clean_path = ft_join_free(clean_path, "/", 1);
-		return ;
-	}
+		return (NULL);
 	index_tab = get_index_tab(tab);
 	while (tab[i] != NULL)
 	{
@@ -137,13 +128,27 @@ static void	get_clean_path(char **path)
 			clean_path = ft_join_free(clean_path, "/", 1);
 			clean_path = ft_join_free(clean_path, tab[i], 1);
 		}
+	ft_putendl(path);
 		i++;
 	}
-	ft_strdel(path);
-	*path = ft_strdup(clean_path);
-	ft_strdel(&clean_path);
+	if (clean_path == NULL)
+		clean_path = ft_join_free(clean_path, "/", 1);
 	ft_free_tab(tab);
 	free(index_tab);
+	return (clean_path);
+}
+
+static void	get_clean_path(char **path)
+{
+	char	*clean_path;
+
+	clean_path = NULL;
+	if (path == NULL || *path == NULL)
+		return ;
+	clean_path = path_cleaning(*path);
+//	ft_strdel(path);
+	*path = ft_strdup(clean_path);
+	ft_strdel(&clean_path);
 }
 
 static char	*find_pathname(char *dir_op, char **pathname)
@@ -183,34 +188,40 @@ static char	*check_cdpath(char *dir_op, t_list *lst)
 	return (curpath);
 }
 
-int		cd_blt(char **av, t_list **lst)
+static char	*get_special_path(char *dir_op, t_list *lst)
 {
 	char	*curpath;
-	char	buf[PATH_MAX];
 	char	*tmp;
-	char	*pwd;
-	size_t	len;
 
-	getcwd(buf, PATH_MAX);
-	if (*av == NULL && ft_getenv("HOME", *lst) == NULL)
-		return (FAILURE);
-	else if (*av == NULL && ft_getenv("HOME", *lst) != NULL)
-		curpath = ft_strdup(ft_getenv("HOME", *lst));
-	else if (ft_strequ(*av, "-") == TRUE)
-		curpath = ft_strdup(ft_getenv("OLDPWD", *lst));
-	else if (*av != NULL && *av[0] == '/')
-		curpath = ft_strdup(*av);
-	else if (ft_strequ(*av, ".") || ft_strequ(*av, ".."))
-		curpath = ft_strdup(*av);
-	else if ((tmp = check_cdpath(*av, *lst)) != NULL)
+	curpath = NULL;
+	if (dir_op == NULL && ft_getenv("HOME", lst) == NULL)
+		return (NULL);
+	else if (dir_op == NULL && ft_getenv("HOME", lst) != NULL)
+		curpath = ft_strdup(ft_getenv("HOME", lst));
+	else if (ft_strequ(dir_op, "-") == TRUE)
+		curpath = ft_strdup(ft_getenv("OLDPWD", lst));
+	else if (dir_op != NULL && dir_op[0] == '/')
+		curpath = ft_strdup(dir_op);
+	else if (ft_strequ(dir_op, ".") || ft_strequ(dir_op, ".."))
+		curpath = ft_strdup(dir_op);
+	else if ((tmp = check_cdpath(dir_op, lst)) != NULL)
 	{
 		curpath = tmp;
 		ft_strdel(&tmp);
 	}
-	else
-		curpath = ft_strdup(*av);
-	/*Jump this step if -P option is enable*/
-	pwd = ft_strdup(ft_getenv("PWD", *lst));
+	return (curpath);
+}
+
+static char	*get_path(char *dir_op, t_list *lst)
+{
+	char	*curpath;
+	char	*pwd;
+	size_t	len;
+
+	curpath = get_special_path(dir_op, lst);
+	if (curpath == NULL)
+		curpath = ft_strdup(dir_op);
+	pwd = ft_strdup(ft_getenv("PWD", lst));
 	if (curpath[0] != '/' && pwd != NULL)
 	{
 		len = ft_strlen(pwd);
@@ -218,15 +229,51 @@ int		cd_blt(char **av, t_list **lst)
 			pwd = ft_join_free(pwd, "/", 1);
 		curpath = ft_join_free(pwd, curpath, 3);
 	}
-	get_clean_path(&curpath);
-	if (check_pathmax(&curpath, *av, *lst) == FAILURE)
+	return (curpath);
+}
+
+static int	change_dir(char *curpath, char *dir_op, t_list **lst, char *buf)
+{
+	if (check_pathmax(&curpath, dir_op, *lst) == FAILURE)
+	{
+		ft_putendl_fd("./minishell: cd: pathname too long", 2);
 		return (FAILURE);
+	}
 	if (check_access(curpath) == FAILURE)
+	{
+		ft_putendl_fd("./minishell: cd: cannot access file", 2);
 		return (FAILURE);
+	}
 	if (chdir(curpath) == FAILURE)
+	{
+		ft_putendl_fd("./minishell: cd: cannot change working directory", 2);
 		return (FAILURE);
+	}
 	setenv_blt("PWD", curpath, lst, 1);
 	setenv_blt("OLDPWD", buf, lst, 1);
+	return (SUCCESS);
+}
+
+int			cd_blt(char **av, t_list **lst)
+{
+	char	*curpath;
+	char	buf[PATH_MAX];
+
+	getcwd(buf, PATH_MAX);
+	if (ft_tablen(av) > 1)
+	{
+		ft_putendl_fd("./minishell: cd: too many arguments", 2);
+		return (FAILURE);
+	}
+	curpath = get_path(*av, *lst);
+	get_clean_path(&curpath);
+	if (curpath == NULL)
+		return (FAILURE);
+	if (change_dir(curpath, *av, lst, buf) == FAILURE)
+	{
+		ft_strdel(&curpath);
+		return (FAILURE);
+	}
 	ft_strdel(&curpath);
 	return (SUCCESS);
 }
