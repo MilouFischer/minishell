@@ -12,20 +12,13 @@
 
 #include "minishell.h"
 
-static int	check_access(char *path)
+static int	check_each_file(char **tab)
 {
-	char	**tab;
 	char	*tmp_path;
 	size_t	i;
 
 	i = 0;
-	tab = NULL;
 	tmp_path = NULL;
-	if (path == NULL)
-		return (FAILURE);
-	tab = ft_strsplit(path, '/');
-	if (tab == NULL)
-		return (FAILURE);
 	while (tab[i] != NULL)
 	{
 		tmp_path = ft_join_free(tmp_path, "/", 1);
@@ -39,6 +32,21 @@ static int	check_access(char *path)
 		i++;
 	}
 	ft_strdel(&tmp_path);
+	return (SUCCESS);
+}
+
+static int	check_access(char *path)
+{
+	char	**tab;
+
+	tab = NULL;
+	if (path == NULL)
+		return (FAILURE);
+	tab = ft_strsplit(path, '/');
+	if (tab == NULL)
+		return (FAILURE);
+	if (check_each_file(tab) == FAILURE)
+		return (FAILURE);
 	ft_free_tab(tab);
 	return (SUCCESS);
 }
@@ -97,10 +105,8 @@ static int	*get_index_tab(char **tab)
 {
 	int		*index_tab;
 	ssize_t	i;
-	ssize_t	tmp;
 
 	i = 0;
-	tmp = 0;
 	while (tab[i] != NULL)
 		i++;
 	index_tab = (int*)malloc(sizeof(int) * i);
@@ -117,6 +123,7 @@ static char	*path_cleaning(char *path)
 	size_t	i;
 
 	i = 0;
+	clean_path = NULL;
 	tab = ft_strsplit(path, '/');
 	if (tab == NULL)
 		return (NULL);
@@ -128,7 +135,6 @@ static char	*path_cleaning(char *path)
 			clean_path = ft_join_free(clean_path, "/", 1);
 			clean_path = ft_join_free(clean_path, tab[i], 1);
 		}
-	ft_putendl(path);
 		i++;
 	}
 	if (clean_path == NULL)
@@ -146,7 +152,7 @@ static void	get_clean_path(char **path)
 	if (path == NULL || *path == NULL)
 		return ;
 	clean_path = path_cleaning(*path);
-//	ft_strdel(path);
+	ft_strdel(path);
 	*path = ft_strdup(clean_path);
 	ft_strdel(&clean_path);
 }
@@ -227,8 +233,9 @@ static char	*get_path(char *dir_op, t_list *lst)
 		len = ft_strlen(pwd);
 		if (pwd[len] != '/')
 			pwd = ft_join_free(pwd, "/", 1);
-		curpath = ft_join_free(pwd, curpath, 3);
+		curpath = ft_join_free(pwd, curpath, 2);
 	}
+	ft_strdel(&pwd);
 	return (curpath);
 }
 
