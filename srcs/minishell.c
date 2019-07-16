@@ -128,6 +128,19 @@ static int	process_command(t_list **lst)
 	return (SUCCESS);
 }
 
+static void	init_env(t_list **lst)
+{
+	char	buf[PATH_MAX];
+
+	if (ft_getenv("PWD", *lst) == NULL)
+	{
+		getcwd(buf, PATH_MAX);
+		setenv_blt("PWD", buf, lst, 1);
+	}
+	if (ft_getenv("SHLVL", *lst) == NULL)
+		setenv_blt("SHLVL", "1", lst, 1);
+}
+
 int			main(int ac, char **av, char **envp)
 {
 	t_list	*lst;
@@ -140,6 +153,7 @@ int			main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ft_putstr_fd("$> ", 2);
+		init_env(&lst);
 		if (process_command(&lst) == FAILURE)
 			return (EXIT_FAILURE);
 	}

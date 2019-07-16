@@ -225,8 +225,13 @@ static char	*get_path(char *dir_op, t_list *lst)
 	size_t	len;
 
 	curpath = get_special_path(dir_op, lst);
-	if (curpath == NULL)
+	if (curpath == NULL && dir_op != NULL)
 		curpath = ft_strdup(dir_op);
+	else if (curpath == NULL)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
+		return (NULL);
+	}
 	pwd = ft_strdup(ft_getenv("PWD", lst));
 	if (curpath[0] != '/' && pwd != NULL)
 	{
@@ -281,6 +286,8 @@ int			cd_blt(char **av, t_list **lst)
 		ft_strdel(&curpath);
 		return (FAILURE);
 	}
+	if (ft_strequ(*av, "-") == TRUE)
+		ft_putendl(curpath);
 	ft_strdel(&curpath);
 	return (SUCCESS);
 }
