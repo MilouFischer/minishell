@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-int		unsetenv_blt(const char *name, t_list **lst)
+int		unsetenv_blt(char **av, t_list **lst)
 {
 	t_list	*head;
 	t_list	*del_env;
 
 	head = *lst;
-	if (name == NULL)
+	if (*av == NULL)
 		return (FAILURE);
-	del_env = find_env(name, *lst);
+	del_env = find_env(*av, *lst);
 	if (del_env == NULL)
 		return (SUCCESS);
 	while ((*lst)->next != NULL && (*lst)->next != del_env)

@@ -33,27 +33,23 @@ static void		add_env(const char *name, const char *val, t_list **lst)
 	ft_lstaddend(lst, ft_lstnew(&env, sizeof(env)));
 }
 
-int				setenv_blt(const char *name, const char *val, t_list **lst,
-				int overwrite)
+int				setenv_blt(char **av, t_list **lst)
 {
 	t_list	*head;
 
 	head = *lst;
-	if (name == NULL || lst == NULL)
+	if (*av == NULL || lst == NULL)
 		return (FAILURE);
-	if (ft_strchr(name, '=') != NULL)
+	if (ft_strchr(*av, '=') != NULL)
 		return (FAILURE);
-	*lst = check_name(name, *lst);
+	*lst = check_name(*av, *lst);
 	if (*lst != NULL)
 	{
-		if (overwrite > 0)
-		{
-			ft_strdel(&((t_env*)((*lst)->content))->value);
-			((t_env*)((*lst)->content))->value = ft_strdup(val);
-		}
+		ft_strdel(&((t_env*)((*lst)->content))->value);
+		((t_env*)((*lst)->content))->value = ft_strdup(av[1]);
 	}
 	else
-		add_env(name, val, &head);
+		add_env(av[0], av[1], &head);
 	*lst = head;
 	return (SUCCESS);
 }

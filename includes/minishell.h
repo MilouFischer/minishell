@@ -28,11 +28,10 @@ void	exit_blt(char **av, t_list **lst);
 int		echo_blt(char **av, t_list **lst);
 int		cd_blt(char **av, t_list **lst);
 void	printenv_blt(char **av, t_list **lst);
-int		setenv_blt(const char *name, const char *val, t_list **lst,
-			int overwrite);
+int		setenv_blt(char **av, t_list **lst);
 void	pwd_blt(char **av, t_list **lst);
 void	env_blt(char **av, t_list **lst);
-int		unsetenv_blt(const char *name, t_list **lst);
+int		unsetenv_blt(char **av, t_list **lst);
 
 t_list	*find_env(const char *arg, t_list *lst);
 void	get_env_lst(char **envp, t_list **lst);

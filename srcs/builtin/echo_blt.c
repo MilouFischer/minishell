@@ -62,7 +62,6 @@ int				echo_blt(char **av, t_list **lst)
 	(void)lst;
 	i = 0;
 	flags = 0;
-	av++;
 	if (av != NULL)
 	{
 		ft_process_av(av, &i, &flags);

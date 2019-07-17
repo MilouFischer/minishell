@@ -12,25 +12,38 @@
 
 #include "minishell.h"
 
+void	put_name_val_in_tab(char *name, char *value, char **env_var)
+{
+	env_var[0] = name;
+	env_var[1] = value;
+	env_var[2] = NULL;
+}
+
 void	init_env(t_list **lst)
 {
 	char	buf[PATH_MAX];
 	char	*shlvl;
 	int		lvl_val;
+	char	*env_var[3];
 
 	if (ft_getenv("PWD", *lst) == NULL)
 	{
 		getcwd(buf, PATH_MAX);
-		setenv_blt("PWD", buf, lst, 1);
+		put_name_val_in_tab("PWD", buf, env_var);
+		setenv_blt(env_var, lst);
 	}
 	shlvl = ft_getenv("SHLVL", *lst);
 	if (shlvl == NULL)
-		setenv_blt("SHLVL", "1", lst, 1);
+	{
+		put_name_val_in_tab("SHLVL", "1", env_var);
+		setenv_blt(env_var, lst);
+	}
 	else
 	{
 		lvl_val = ft_atoi(shlvl);
 		shlvl = ft_itoa(lvl_val + 1);
-		setenv_blt("SHLVL", shlvl, lst, 1);
+		put_name_val_in_tab("SHLVL", shlvl, env_var);
+		setenv_blt(env_var, lst);
 		ft_strdel(&shlvl);
 	}
 }

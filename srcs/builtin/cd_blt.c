@@ -244,7 +244,7 @@ static char	*get_path(char *dir_op, t_list *lst)
 	return (curpath);
 }
 
-static int	change_dir(char *curpath, char *dir_op, t_list **lst, char *buf)
+static int	change_dir(char *curpath, char *dir_op, t_list **lst)
 {
 	if (check_pathmax(&curpath, dir_op, *lst) == FAILURE)
 	{
@@ -261,9 +261,22 @@ static int	change_dir(char *curpath, char *dir_op, t_list **lst, char *buf)
 		ft_putendl_fd("./minishell: cd: cannot change working directory", 2);
 		return (FAILURE);
 	}
-	setenv_blt("PWD", curpath, lst, 1);
-	setenv_blt("OLDPWD", buf, lst, 1);
 	return (SUCCESS);
+}
+
+static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst)
+{
+	char	*pwd[3];
+	char	*oldpwd[3];
+
+	pwd[0] = "PWD";
+	pwd[1] = curpath;
+	pwd[2] = NULL;
+	oldpwd[0] = "OLDPWD";
+	oldpwd[1] = buf;
+	oldpwd[2] = NULL;
+	setenv_blt(pwd, lst);
+	setenv_blt(oldpwd, lst);
 }
 
 int			cd_blt(char **av, t_list **lst)
@@ -271,7 +284,6 @@ int			cd_blt(char **av, t_list **lst)
 	char	*curpath;
 	char	buf[PATH_MAX];
 
-	av++;
 	getcwd(buf, PATH_MAX);
 	if (ft_tablen(av) > 1)
 	{
@@ -282,11 +294,12 @@ int			cd_blt(char **av, t_list **lst)
 	get_clean_path(&curpath);
 	if (curpath == NULL)
 		return (FAILURE);
-	if (change_dir(curpath, *av, lst, buf) == FAILURE)
+	if (change_dir(curpath, *av, lst) == FAILURE)
 	{
 		ft_strdel(&curpath);
 		return (FAILURE);
 	}
+	set_pwd_oldpwd(curpath, buf, lst);
 	if (ft_strequ(*av, "-") == TRUE)
 		ft_putendl(curpath);
 	ft_strdel(&curpath);

@@ -16,7 +16,6 @@ void			printenv_blt(char **av, t_list **lst)
 {
 	t_list	*tmp;
 
-	av++;
 	if (*lst == NULL)
 		return ;
 	if (av != NULL && *av == NULL)

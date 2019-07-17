@@ -82,7 +82,6 @@ void		env_blt(char **av, t_list **lst)
 	t_list	*local_lst;
 	t_list	*head;
 
-	av++;
 	local_lst = NULL;
 	if (check_flag_i(&av) == TRUE)
 		local_lst = NULL;

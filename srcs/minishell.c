@@ -64,20 +64,20 @@ static int	ft_exec_bin(char **av, t_list **lst)
 static int	ft_exec_builtin(char **av, t_list **lst)
 {
 	if (ft_strequ(av[0], "exit") == TRUE)
-		exit_blt(av, lst);
+		exit_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "echo") == TRUE)
-		echo_blt(av, lst);
+		echo_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "cd") == TRUE)
-		cd_blt(av, lst);
+		cd_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "env") == TRUE)
-		env_blt(av, lst);
+		env_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "printenv") == TRUE)
-		printenv_blt(av, lst);
+		printenv_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
-		pwd_blt(av, lst);
+		pwd_blt(av + 1, lst);
 	else if (ft_strequ(av[0], "unsetenv") == TRUE)
 	{
-		if (unsetenv_blt(av[1], lst) == FAILURE)
+		if (unsetenv_blt(av + 1, lst) == FAILURE)
 			ft_putstr_fd("unsetenv fail", 2);
 	}
 	else
