@@ -60,10 +60,7 @@ static void	change_env(char ***av, t_list **lst)
 		ft_strdel(*av);
 		(*av)++;
 	}
-	ft_putendl(**av);
 }
-
-#include <assert.h>
 
 static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 {
@@ -85,7 +82,6 @@ void		env_blt(char **av, t_list *lst)
 
 	local_lst = NULL;
 	get_lst_cpy(&local_lst, lst);
-	printenv_blt(NULL, lst);
 	if (check_flag_i(&av) == TRUE)
 		local_lst = NULL;
 	change_env(&av, &local_lst);

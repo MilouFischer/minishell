@@ -12,6 +12,29 @@
 
 #include "minishell.h"
 
+void	init_env(t_list **lst)
+{
+	char	buf[PATH_MAX];
+	char	*shlvl;
+	int		lvl_val;
+
+	if (ft_getenv("PWD", *lst) == NULL)
+	{
+		getcwd(buf, PATH_MAX);
+		setenv_blt("PWD", buf, lst, 1);
+	}
+	shlvl = ft_getenv("SHLVL", *lst);
+	if (shlvl == NULL)
+		setenv_blt("SHLVL", "1", lst, 1);
+	else
+	{
+		lvl_val = ft_atoi(shlvl);
+		shlvl = ft_itoa(lvl_val + 1);
+		setenv_blt("SHLVL", shlvl, lst, 1);
+		ft_strdel(&shlvl);
+	}
+}
+
 char	*ft_getenv(char *env_name, t_list *lst)
 {
 	if (env_name == NULL || lst == NULL)

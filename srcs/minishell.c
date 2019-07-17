@@ -63,16 +63,8 @@ static int	ft_exec_bin(char **av, t_list **lst)
 
 static int	ft_exec_builtin(char **av, t_list **lst)
 {
-	int		status;
-
-	status = 0;
 	if (ft_strequ(av[0], "exit") == TRUE)
-	{
-		if (av[1] != NULL)
-			status = ft_atoi(av[1]);
-		ft_free_tab(av);
-		exit_blt(status, *lst);
-	}
+		exit_blt(av, lst);
 	else if (ft_strequ(av[0], "echo") == TRUE)
 		echo_blt(av + 1);
 	else if (ft_strequ(av[0], "cd") == TRUE)
@@ -121,24 +113,10 @@ static int	process_command(t_list **lst)
 		error = ft_asprintf("minishell: command not found: %s\n", tab[0]);
 		ft_putstr_fd(error, 2);
 		ft_strdel(&error);
-		ft_free_tab(tab);
-		exit_blt(EXIT_FAILURE, *lst);
+		exit_blt(tab, lst);
 	}
 	ft_free_tab(tab);
 	return (SUCCESS);
-}
-
-static void	init_env(t_list **lst)
-{
-	char	buf[PATH_MAX];
-
-	if (ft_getenv("PWD", *lst) == NULL)
-	{
-		getcwd(buf, PATH_MAX);
-		setenv_blt("PWD", buf, lst, 1);
-	}
-	if (ft_getenv("SHLVL", *lst) == NULL)
-		setenv_blt("SHLVL", "1", lst, 1);
 }
 
 int			main(int ac, char **av, char **envp)
@@ -150,10 +128,10 @@ int			main(int ac, char **av, char **envp)
 	lst = NULL;
 	ft_bzero(&lst, sizeof(lst));
 	get_env_lst(envp, &lst);
+	init_env(&lst);
 	while (1)
 	{
 		ft_putstr_fd("$> ", 2);
-		init_env(&lst);
 		if (process_command(&lst) == FAILURE)
 			return (EXIT_FAILURE);
 	}
