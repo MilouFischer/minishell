@@ -25,13 +25,13 @@ typedef struct	s_env
 }				t_env;
 
 void	exit_blt(char **av, t_list **lst);
-int		echo_blt(char **av);
+int		echo_blt(char **av, t_list **lst);
 int		cd_blt(char **av, t_list **lst);
-void	printenv_blt(char **av, t_list *lst);
+void	printenv_blt(char **av, t_list **lst);
 int		setenv_blt(const char *name, const char *val, t_list **lst,
 			int overwrite);
-void	pwd_blt(t_list *lst);
-void	env_blt(char **av, t_list *lst);
+void	pwd_blt(char **av, t_list **lst);
+void	env_blt(char **av, t_list **lst);
 int		unsetenv_blt(const char *name, t_list **lst);
 
 t_list	*find_env(const char *arg, t_list *lst);

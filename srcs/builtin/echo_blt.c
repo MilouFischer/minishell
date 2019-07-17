@@ -54,13 +54,15 @@ static void		ft_print_arg(char **av, size_t i)
 	ft_strdel(&out);
 }
 
-int				echo_blt(char **av)
+int				echo_blt(char **av, t_list **lst)
 {
 	uint8_t		flags;
 	size_t	i;
 
+	(void)lst;
 	i = 0;
 	flags = 0;
+	av++;
 	if (av != NULL)
 	{
 		ft_process_av(av, &i, &flags);

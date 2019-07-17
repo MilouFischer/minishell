@@ -12,19 +12,20 @@
 
 #include "minishell.h"
 
-void			printenv_blt(char **av, t_list *lst)
+void			printenv_blt(char **av, t_list **lst)
 {
 	t_list	*tmp;
 
-	if (lst == NULL)
+	av++;
+	if (*lst == NULL)
 		return ;
 	if (av != NULL && *av == NULL)
-		ft_lstprint(lst, get_content_to_print);
+		ft_lstprint(*lst, get_content_to_print);
 	else
 	{
 		while (av != NULL && *av != NULL)
 		{
-			tmp = find_env(*av++, lst);
+			tmp = find_env(*av++, *lst);
 			if (tmp != NULL)
 				ft_putendl(((t_env*)(tmp->content))->value);
 		}

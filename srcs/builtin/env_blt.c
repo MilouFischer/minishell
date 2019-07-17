@@ -48,6 +48,7 @@ static void	get_new_env(char *str, t_list **lst)
 	name = ft_strsub(str, 0, value - str);
 	value += 1;
 	setenv_blt(name, value, lst, 1);
+	ft_strdel(&name);
 }
 
 static void	change_env(char ***av, t_list **lst)
@@ -75,15 +76,19 @@ static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 	}
 }
 
-void		env_blt(char **av, t_list *lst)
+void		env_blt(char **av, t_list **lst)
 {
 	char	*tab[2];
 	t_list	*local_lst;
+	t_list	*head;
 
+	av++;
 	local_lst = NULL;
-	get_lst_cpy(&local_lst, lst);
 	if (check_flag_i(&av) == TRUE)
 		local_lst = NULL;
+	else
+		get_lst_cpy(&local_lst, *lst);
+	head = local_lst;
 	change_env(&av, &local_lst);
 	if (*av != NULL)
 		exec_command(av, &local_lst);
@@ -93,4 +98,5 @@ void		env_blt(char **av, t_list *lst)
 		tab[1] = NULL;
 		exec_command(tab, &local_lst);
 	}
+	ft_lstfree(head, free_env);
 }

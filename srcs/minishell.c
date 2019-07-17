@@ -66,15 +66,15 @@ static int	ft_exec_builtin(char **av, t_list **lst)
 	if (ft_strequ(av[0], "exit") == TRUE)
 		exit_blt(av, lst);
 	else if (ft_strequ(av[0], "echo") == TRUE)
-		echo_blt(av + 1);
+		echo_blt(av, lst);
 	else if (ft_strequ(av[0], "cd") == TRUE)
-		cd_blt(av + 1, lst);
+		cd_blt(av, lst);
 	else if (ft_strequ(av[0], "env") == TRUE)
-		env_blt(av + 1, *lst);
+		env_blt(av, lst);
 	else if (ft_strequ(av[0], "printenv") == TRUE)
-		printenv_blt(av + 1, *lst);
+		printenv_blt(av, lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
-		pwd_blt(*lst);
+		pwd_blt(av, lst);
 	else if (ft_strequ(av[0], "unsetenv") == TRUE)
 	{
 		if (unsetenv_blt(av[1], lst) == FAILURE)

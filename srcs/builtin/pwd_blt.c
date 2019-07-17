@@ -1,10 +1,12 @@
 #include "minishell.h"
 
-void	pwd_blt(t_list *lst)
+void	pwd_blt(char **av, t_list **lst)
 {
-	char	*pwd[2];
+	char	*pwd[3];
 
-	pwd[0] = "PWD";
-	pwd[1] = NULL;
+	(void)av;
+	pwd[0] = NULL;
+	pwd[1] = "PWD";
+	pwd[2] = NULL;
 	printenv_blt(pwd, lst);
 }

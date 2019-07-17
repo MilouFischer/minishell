@@ -271,6 +271,7 @@ int			cd_blt(char **av, t_list **lst)
 	char	*curpath;
 	char	buf[PATH_MAX];
 
+	av++;
 	getcwd(buf, PATH_MAX);
 	if (ft_tablen(av) > 1)
 	{
