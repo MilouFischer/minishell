@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/12 16:47:12 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 10:56:56 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,12 +269,8 @@ static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst)
 	char	*pwd[3];
 	char	*oldpwd[3];
 
-	pwd[0] = "PWD";
-	pwd[1] = curpath;
-	pwd[2] = NULL;
-	oldpwd[0] = "OLDPWD";
-	oldpwd[1] = buf;
-	oldpwd[2] = NULL;
+	put_name_val_in_tab("PWD", curpath, pwd);
+	put_name_val_in_tab("OLDPWD", buf, oldpwd);
 	setenv_blt(pwd, lst);
 	setenv_blt(oldpwd, lst);
 }
@@ -284,6 +280,7 @@ int			cd_blt(char **av, t_list **lst)
 	char	*curpath;
 	char	buf[PATH_MAX];
 
+	av++;
 	getcwd(buf, PATH_MAX);
 	if (ft_tablen(av) > 1)
 	{

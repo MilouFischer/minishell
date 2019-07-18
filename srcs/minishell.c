@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/12 11:24:17 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 12:27:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,24 @@ static int	ft_exec_bin(char **av, t_list **lst)
 static int	ft_exec_builtin(char **av, t_list **lst)
 {
 	if (ft_strequ(av[0], "exit") == TRUE)
-		exit_blt(av + 1, lst);
+		exit_blt(av, lst);
 	else if (ft_strequ(av[0], "echo") == TRUE)
-		echo_blt(av + 1, lst);
+		echo_blt(av, lst);
 	else if (ft_strequ(av[0], "cd") == TRUE)
-		cd_blt(av + 1, lst);
+		cd_blt(av, lst);
 	else if (ft_strequ(av[0], "env") == TRUE)
-		env_blt(av + 1, lst);
+		env_blt(av, lst);
 	else if (ft_strequ(av[0], "printenv") == TRUE)
-		printenv_blt(av + 1, lst);
+		printenv_blt(av, lst);
 	else if (ft_strequ(av[0], "pwd") == TRUE)
-		pwd_blt(av + 1, lst);
+		pwd_blt(av, lst);
 	else if (ft_strequ(av[0], "unsetenv") == TRUE)
 	{
-		if (unsetenv_blt(av + 1, lst) == FAILURE)
+		if (unsetenv_blt(av, lst) == FAILURE)
 			ft_putstr_fd("unsetenv fail", 2);
 	}
+	else if (ft_strequ(av[0], "setenv") == TRUE)
+		setenv_blt(av, lst);
 	else
 		return (FAILURE);
 	return (SUCCESS);
@@ -103,7 +105,7 @@ static int	process_command(t_list **lst)
 	char	*error;
 
 	tab = NULL;
-	if (ft_get_command(&tab) == FALSE)
+	if (ft_get_command(&tab, *lst) == FALSE)
 	{
 		ft_free_tab(tab);
 		return (FAILURE);

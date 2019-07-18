@@ -5,6 +5,7 @@ int		unsetenv_blt(char **av, t_list **lst)
 	t_list	*head;
 	t_list	*del_env;
 
+	av++;
 	head = *lst;
 	if (*av == NULL)
 		return (FAILURE);

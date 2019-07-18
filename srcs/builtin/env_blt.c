@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 15:04:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 10:57:48 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ static void	get_new_env(char *str, t_list **lst)
 {
 	char	*value;
 	char	*name;
+	char	*env_var[3];
 
 	value = ft_strchr(str, '=');
 	name = ft_strsub(str, 0, value - str);
 	value += 1;
-	setenv_blt(name, value, lst, 1);
+	put_name_val_in_tab(name, value, env_var);
+	setenv_blt(env_var, lst);
 	ft_strdel(&name);
 }
 
@@ -82,6 +84,7 @@ void		env_blt(char **av, t_list **lst)
 	t_list	*local_lst;
 	t_list	*head;
 
+	av++;
 	local_lst = NULL;
 	if (check_flag_i(&av) == TRUE)
 		local_lst = NULL;

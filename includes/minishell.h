@@ -38,10 +38,11 @@ void	get_env_lst(char **envp, t_list **lst);
 void	get_content_to_print(t_list *lst, t_list **elem);
 char	*get_content_to_tab(t_list *lst);
 void	free_env(void *content, size_t content_size);
-int		ft_get_command(char ***av);
+int		ft_get_command(char ***av, t_list *lst);
 char	*ft_getenv(char *env_name, t_list *lst);
 int		exec_command(char **av, t_list **lst);
 t_list	*cpy_lst(t_list	*lst);
 void	init_env(t_list **lst);
+void	put_name_val_in_tab(char *name, char *value, char **env_var);
 
 #endif

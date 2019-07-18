@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 13:06:35 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 11:02:34 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int				setenv_blt(char **av, t_list **lst)
 	t_list	*head;
 
 	head = *lst;
+	if (ft_strequ(av[0], "setenv") == TRUE)
+		av++;
 	if (*av == NULL || lst == NULL)
 		return (FAILURE);
 	if (ft_strchr(*av, '=') != NULL)

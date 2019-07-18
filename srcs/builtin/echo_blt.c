@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/10 15:53:31 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 10:56:22 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int				echo_blt(char **av, t_list **lst)
 	size_t	i;
 
 	(void)lst;
+	av++;
 	i = 0;
 	flags = 0;
 	if (av != NULL)
