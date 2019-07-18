@@ -6,22 +6,20 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 12:27:11 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 15:03:33 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	exec(t_list *lst, char **av)
+static int	exec_path(t_list *lst, char **av, char **env)
 {
 	char	**path_tab;
-	char	**env;
 	char	*path;
 	size_t	i;
 
 	i = 0;
 	path = NULL;
-	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	while (lst != NULL
 	&& ft_strequ(((t_env*)(lst->content))->name, "PATH") == FALSE)
 		lst = lst->next;
@@ -38,6 +36,29 @@ static int	exec(t_list *lst, char **av)
 		}
 		ft_strdel(&path);
 		i++;
+	}
+	return (FAILURE);
+}
+
+static int	exec(t_list *lst, char **av)
+{
+	char	**env;
+	char	*path;
+
+	env = ft_lst_to_char_tab(lst, get_content_to_tab);
+	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
+	{
+		path = av[0];
+		if (execve(path, av, env) != FAILURE)
+		{
+			ft_strdel(&path);
+			return (SUCCESS);
+		}
+	}
+	else
+	{
+		if (exec_path(lst, av, env) == SUCCESS)
+			return (SUCCESS);
 	}
 	return (FAILURE);
 }
