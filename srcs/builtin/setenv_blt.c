@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 15:43:36 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 16:01:59 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		add_env(const char *name, const char *val, t_list **lst)
 	ft_lstaddend(lst, ft_lstnew(&env, sizeof(env)));
 }
 
-static int		name_val_is_alnum(char *name, char *val)
+static int		name_is_alnum(char *name)
 {
 	size_t	i;
 
@@ -41,13 +41,6 @@ static int		name_val_is_alnum(char *name, char *val)
 	while (name[i] != '\0')
 	{
 		if (ft_isalnum(name[i]) == FALSE && name[i] != '_')
-			return (FALSE);
-		i++;
-	}
-	i = 0;
-	while (val[i] != '\0')
-	{
-		if (ft_isalnum(val[i]) == FALSE && val[i] != '_')
 			return (FALSE);
 		i++;
 	}
@@ -83,7 +76,7 @@ int				setenv_blt(char **av, t_list **lst)
 	val = av[1];
 	if (val == NULL)
 		val = "\0";
-	if (name_val_is_alnum(name, val) == FALSE)
+	if (name_is_alnum(name) == FALSE)
 	{
 		ft_putendl_fd("minishell: setenv: invalid syntax", 2);
 		return (FAILURE);
