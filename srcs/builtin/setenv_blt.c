@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 11:02:34 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 15:43:36 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,61 @@ static void		add_env(const char *name, const char *val, t_list **lst)
 	ft_lstaddend(lst, ft_lstnew(&env, sizeof(env)));
 }
 
-int				setenv_blt(char **av, t_list **lst)
+static int		name_val_is_alnum(char *name, char *val)
+{
+	size_t	i;
+
+	i = 0;
+	while (name[i] != '\0')
+	{
+		if (ft_isalnum(name[i]) == FALSE && name[i] != '_')
+			return (FALSE);
+		i++;
+	}
+	i = 0;
+	while (val[i] != '\0')
+	{
+		if (ft_isalnum(val[i]) == FALSE && val[i] != '_')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
+static void		new_env_var(char *name, char *val, t_list **lst)
 {
 	t_list	*head;
 
 	head = *lst;
-	if (ft_strequ(av[0], "setenv") == TRUE)
-		av++;
-	if (*av == NULL || lst == NULL)
-		return (FAILURE);
-	if (ft_strchr(*av, '=') != NULL)
-		return (FAILURE);
-	*lst = check_name(*av, *lst);
+	*lst = check_name(name, *lst);
 	if (*lst != NULL)
 	{
 		ft_strdel(&((t_env*)((*lst)->content))->value);
-		((t_env*)((*lst)->content))->value = ft_strdup(av[1]);
+		((t_env*)((*lst)->content))->value = ft_strdup(val);
 	}
 	else
-		add_env(av[0], av[1], &head);
+		add_env(name, val, &head);
 	*lst = head;
+}
+
+int				setenv_blt(char **av, t_list **lst)
+{
+	char	*name;
+	char	*val;
+
+	if (ft_strequ(av[0], "setenv") == TRUE)
+		av++;
+	if (*av == NULL)
+		return (SUCCESS);
+	name = av[0];
+	val = av[1];
+	if (val == NULL)
+		val = "\0";
+	if (name_val_is_alnum(name, val) == FALSE)
+	{
+		ft_putendl_fd("minishell: setenv: invalid syntax", 2);
+		return (FAILURE);
+	}
+	new_env_var(name, val, lst);
 	return (SUCCESS);
 }
