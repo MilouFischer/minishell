@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 10:56:56 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/18 16:41:51 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,10 +278,10 @@ static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst)
 int			cd_blt(char **av, t_list **lst)
 {
 	char	*curpath;
-	char	buf[PATH_MAX];
+	char	*pwd;
 
 	av++;
-	getcwd(buf, PATH_MAX);
+	pwd = ft_getenv("PWD", *lst);
 	if (ft_tablen(av) > 1)
 	{
 		ft_putendl_fd("./minishell: cd: too many arguments", 2);
@@ -296,7 +296,7 @@ int			cd_blt(char **av, t_list **lst)
 		ft_strdel(&curpath);
 		return (FAILURE);
 	}
-	set_pwd_oldpwd(curpath, buf, lst);
+	set_pwd_oldpwd(curpath, pwd, lst);
 	if (ft_strequ(*av, "-") == TRUE)
 		ft_putendl(curpath);
 	ft_strdel(&curpath);
