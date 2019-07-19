@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void		exit_blt(char **av, t_list **lst)
+int		exit_blt(char **av, t_list **lst)
 {
 	int		status;
 
@@ -22,4 +22,5 @@ void		exit_blt(char **av, t_list **lst)
 	ft_free_tab(av);
 	ft_lstfree(*lst, free_env);
 	exit(status);
+	return (status);
 }

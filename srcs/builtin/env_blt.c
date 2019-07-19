@@ -78,7 +78,7 @@ static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 	}
 }
 
-void		env_blt(char **av, t_list **lst)
+int		env_blt(char **av, t_list **lst)
 {
 	char	*tab[2];
 	t_list	*local_lst;
@@ -101,4 +101,5 @@ void		env_blt(char **av, t_list **lst)
 		exec_command(tab, &local_lst);
 	}
 	ft_lstfree(head, free_env);
+	return (SUCCESS);
 }

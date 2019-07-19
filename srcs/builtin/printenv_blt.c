@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-void			printenv_blt(char **av, t_list **lst)
+int		printenv_blt(char **av, t_list **lst)
 {
 	t_list	*tmp;
 
 	if (ft_strequ(av[0], "printenv") == TRUE)
 		av++;
 	if (*lst == NULL)
-		return ;
+		return (FAILURE);
 	if (av != NULL && *av == NULL)
 		ft_lstprint(*lst, get_content_to_print);
 	else
@@ -31,4 +31,5 @@ void			printenv_blt(char **av, t_list **lst)
 				ft_putendl(((t_env*)(tmp->content))->value);
 		}
 	}
+	return (SUCCESS);
 }

@@ -84,28 +84,21 @@ static int	ft_exec_bin(char **av, t_list **lst)
 
 static int	ft_exec_builtin(char **av, t_list **lst)
 {
-	if (ft_strequ(av[0], "exit") == TRUE)
-		exit_blt(av, lst);
-	else if (ft_strequ(av[0], "echo") == TRUE)
-		echo_blt(av, lst);
-	else if (ft_strequ(av[0], "cd") == TRUE)
-		cd_blt(av, lst);
-	else if (ft_strequ(av[0], "env") == TRUE)
-		env_blt(av, lst);
-	else if (ft_strequ(av[0], "printenv") == TRUE)
-		printenv_blt(av, lst);
-	else if (ft_strequ(av[0], "pwd") == TRUE)
-		pwd_blt(av, lst);
-	else if (ft_strequ(av[0], "unsetenv") == TRUE)
+	char	*builtin[NB_OF_BLT] = { BUILTIN };
+	int		(*f_blt[NB_OF_BLT])(char **, t_list **) = { F_BLT };
+	size_t	i;
+
+	i = 0;
+	while (i < NB_OF_BLT)
 	{
-		if (unsetenv_blt(av, lst) == FAILURE)
-			ft_putstr_fd("unsetenv fail", 2);
+		if (ft_strequ(av[0], builtin[i]) == TRUE)
+		{
+			f_blt[i](av, lst);
+			return (SUCCESS);
+		}
+		i++;
 	}
-	else if (ft_strequ(av[0], "setenv") == TRUE)
-		setenv_blt(av, lst);
-	else
-		return (FAILURE);
-	return (SUCCESS);
+	return (FAILURE);
 }
 
 int			exec_command(char **av, t_list **lst)
