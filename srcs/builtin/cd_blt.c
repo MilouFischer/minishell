@@ -271,8 +271,8 @@ static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst)
 
 	put_name_val_in_tab("PWD", curpath, pwd);
 	put_name_val_in_tab("OLDPWD", buf, oldpwd);
-	setenv_blt(pwd, lst);
 	setenv_blt(oldpwd, lst);
+	setenv_blt(pwd, lst);
 }
 
 int			cd_blt(char **av, t_list **lst)
