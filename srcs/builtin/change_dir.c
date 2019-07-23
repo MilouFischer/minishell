@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 12:32:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 15:07:19 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:41:15 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 static void	put_error(char *err_str, char *path, int error)
 {
 	ft_putstr_fd(err_str, 2);
+	if (ft_strequ(path, "-"))
+	{
+		ft_putendl_fd("OLDPWD not set", 2);
+		return ;
+	}
 	ft_putstr_fd(path, 2);
 	if (error == NOTFOUND)
 		ft_putendl_fd(": No such file or directory", 2);

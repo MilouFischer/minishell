@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 15:12:19 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:29:37 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		ft_check_arg(char *arg)
 		{
 			ft_putstr_fd("minishell: cd: -", 2);
 			ft_putchar_fd(arg[i], 2);
-			ft_putstr_fd(": Invalid option", 2);
+			ft_putendl_fd(": Invalid option", 2);
 			ft_putendl_fd("usage: cd [-P] [directory]", 2);
 			return (FALSE);
 		}
