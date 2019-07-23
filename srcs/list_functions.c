@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 15:08:56 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/09 14:54:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 12:43:21 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	free_env(void *content, size_t content_size)
 	free(content);
 }
 
-t_list	*cpy_lst(t_list	*lst)
+t_list	*cpy_lst(t_list *lst)
 {
 	t_list	*new;
 	t_env	env;

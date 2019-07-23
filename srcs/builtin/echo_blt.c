@@ -6,11 +6,11 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 10:56:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 12:40:36 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
 
 static int		ft_check_arg(char *arg)
 {
@@ -57,7 +57,7 @@ static void		ft_print_arg(char **av, size_t i)
 int				echo_blt(char **av, t_list **lst)
 {
 	uint8_t		flags;
-	size_t	i;
+	size_t		i;
 
 	(void)lst;
 	av++;

@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 10:22:10 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 12:42:25 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void		process_tilde(char **av, t_list *lst)
 	ft_strdel(&tilde_part);
 }
 
-static void	check_dollar_operand(char **av, size_t *i, char **new_av, t_list *lst)
+static void	check_dollar_operand(char **av, size_t *i, char **new_av,
+			t_list *lst)
 {
 	char	*operand;
 	char	*env;

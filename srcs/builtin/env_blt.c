@@ -6,11 +6,11 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 10:57:48 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 12:41:04 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
 
 static int	check_flag_i(char ***av)
 {
@@ -78,7 +78,7 @@ static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 	}
 }
 
-int		env_blt(char **av, t_list **lst)
+int			env_blt(char **av, t_list **lst)
 {
 	char	*tab[2];
 	t_list	*local_lst;

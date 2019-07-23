@@ -41,6 +41,9 @@ SRCS += setenv_blt.c
 SRCS += pwd_blt.c
 SRCS += unsetenv_blt.c
 SRCS += env_blt.c
+SRCS += get_path.c
+SRCS += clean_path.c
+SRCS += change_dir.c
 
 #=====================================OBJS======================================
 
