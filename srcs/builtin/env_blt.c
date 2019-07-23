@@ -6,37 +6,50 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:41:04 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 16:15:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static int	check_flag_i(char ***av)
+static int		ft_check_arg(char *arg, uint8_t *flags)
 {
-	char	*error;
 	size_t	i;
 
-	if (*av == NULL || **av == NULL || (**av)[0] != '-')
-		return (FALSE);
-	while (**av != NULL && (**av)[0] == '-')
+	i = 1;
+	while (arg[i] != '\0')
 	{
-		i = 1;
-		while ((**av)[i] != '\0')
+		*flags = 0;
+		if (arg[i] == 'i')
+			*flags |= FLAG_I;
+		else
 		{
-			if ((**av)[i] != 'i')
-			{
-				error = ft_asprintf("env: invalid option -- '%c'", (**av)[i]);
-				ft_putstr_fd(error, 2);
-				ft_strdel(&error);
-				return (FALSE);
-			}
-			i++;
+			ft_putstr_fd("minishell: env: -", 2);
+			ft_putchar_fd(arg[i], 2);
+			ft_putendl_fd(": Invalid option", 2);
+			ft_putstr_fd("usage: env [-i] [name=value]...", 2);
+			ft_putendl_fd("[utility [argument...]]", 2);
+			return (FALSE);
 		}
-		ft_strdel(*av);
-		(*av)++;
+		i++;
 	}
 	return (TRUE);
+}
+
+static int	get_flags(char ***av, uint8_t *flags)
+{
+	while (**av != NULL && ***av == '-')
+	{
+		if (ft_strequ(**av, "--") == TRUE)
+		{
+			(*av)++;
+			return (SUCCESS);
+		}
+		else if (ft_check_arg(**av, flags) == FALSE)
+			return (FAILURE);
+		(*av)++;
+	}
+	return (SUCCESS);
 }
 
 static void	get_new_env(char *str, t_list **lst)
@@ -83,10 +96,13 @@ int			env_blt(char **av, t_list **lst)
 	char	*tab[2];
 	t_list	*local_lst;
 	t_list	*head;
+	uint8_t	flags;
 
 	av++;
 	local_lst = NULL;
-	if (check_flag_i(&av) == TRUE)
+	if (get_flags(&av, &flags) == FAILURE)
+		return (FAILURE);
+	if ((flags & FLAG_I) == FLAG_I)
 		local_lst = NULL;
 	else
 		get_lst_cpy(&local_lst, *lst);
