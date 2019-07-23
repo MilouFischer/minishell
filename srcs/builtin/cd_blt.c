@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 16:41:51 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 11:20:19 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,22 +246,15 @@ static char	*get_path(char *dir_op, t_list *lst)
 
 static int	change_dir(char *curpath, char *dir_op, t_list **lst)
 {
-	if (check_pathmax(&curpath, dir_op, *lst) == FAILURE)
-	{
-		ft_putendl_fd("./minishell: cd: pathname too long", 2);
-		return (FAILURE);
-	}
-	if (check_access(curpath) == FAILURE)
-	{
-		ft_putendl_fd("./minishell: cd: cannot access file", 2);
-		return (FAILURE);
-	}
-	if (chdir(curpath) == FAILURE)
-	{
-		ft_putendl_fd("./minishell: cd: cannot change working directory", 2);
-		return (FAILURE);
-	}
-	return (SUCCESS);
+	int		ret;
+
+	if ((ret = check_pathmax(&curpath, dir_op, *lst)) == FAILURE)
+		ft_putendl_fd("minishell: cd: pathname too long", 2);
+	else if ((ret = check_access(curpath)) == FAILURE)
+		ft_putendl_fd("minishell: cd: cannot access file", 2);
+	else if ((ret = chdir(curpath)) == FAILURE)
+		ft_putendl_fd("minishell: cd: cannot change working directory", 2);
+	return (ret);
 }
 
 static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst)
@@ -281,10 +274,11 @@ int			cd_blt(char **av, t_list **lst)
 	char	*pwd;
 
 	av++;
+	init_env(lst);
 	pwd = ft_getenv("PWD", *lst);
 	if (ft_tablen(av) > 1)
 	{
-		ft_putendl_fd("./minishell: cd: too many arguments", 2);
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
 		return (FAILURE);
 	}
 	curpath = get_path(*av, *lst);

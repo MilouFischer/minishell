@@ -24,15 +24,21 @@ COMPILE += $(CC) -c
 #=====================================SRCS======================================
 
 SRCS += minishell.c
+SRCS += manage_env.c
+SRCS += list_functions.c
+SRCS += get_command.c
+SRCS += expansion.c
+SRCS += exec_blt.c
+SRCS += exec_bin.c
+
+#///////////////////////////////////BUILTIN/////////////////////////////////////
+
 SRCS += exit_blt.c
 SRCS += echo_blt.c
 SRCS += cd_blt.c
-SRCS += manage_env.c
 SRCS += printenv_blt.c
-SRCS += list_functions.c
 SRCS += setenv_blt.c
 SRCS += pwd_blt.c
-SRCS += get_command.c
 SRCS += unsetenv_blt.c
 SRCS += env_blt.c
 

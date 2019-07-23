@@ -6,108 +6,19 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/18 15:05:33 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 10:36:05 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	exec_path(t_list *lst, char **av, char **env)
-{
-	char	**path_tab;
-	char	*path;
-	size_t	i;
-
-	i = 0;
-	path = NULL;
-	while (lst != NULL
-	&& ft_strequ(((t_env*)(lst->content))->name, "PATH") == FALSE)
-		lst = lst->next;
-	if (lst == NULL)
-		return (FAILURE);
-	path_tab = ft_strsplit(((t_env*)(lst->content))->value, ':');
-	while (path_tab[i] != NULL)
-	{
-		path = ft_asprintf("%s/%s", path_tab[i], av[0]);
-		if (execve(path, av, env) != FAILURE)
-		{
-			ft_strdel(&path);
-			return (SUCCESS);
-		}
-		ft_strdel(&path);
-		i++;
-	}
-	return (FAILURE);
-}
-
-static int	exec(t_list *lst, char **av)
-{
-	char	**env;
-	char	*path;
-
-	env = ft_lst_to_char_tab(lst, get_content_to_tab);
-	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
-	{
-		path = av[0];
-		if (execve(path, av, env) != FAILURE)
-		{
-			ft_strdel(&path);
-			return (SUCCESS);
-		}
-	}
-	else
-	{
-		if (exec_path(lst, av, env) == SUCCESS)
-			return (SUCCESS);
-	}
-	return (FAILURE);
-}
-
-static int	ft_exec_bin(char **av, t_list **lst)
-{
-	pid_t	pid;
-	int		status;
-
-	status = 0;
-	pid = fork();
-	if (pid == FAILURE)
-		return (FAILURE);
-	if (pid > 0)
-		wait(&status);
-	if (pid == 0)
-	{
-		if (exec(*lst, av) == FAILURE)
-			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-static int	ft_exec_builtin(char **av, t_list **lst)
-{
-	char	*builtin[NB_OF_BLT] = { BUILTIN };
-	int		(*f_blt[NB_OF_BLT])(char **, t_list **) = { F_BLT };
-	size_t	i;
-
-	i = 0;
-	while (i < NB_OF_BLT)
-	{
-		if (ft_strequ(av[0], builtin[i]) == TRUE)
-		{
-			f_blt[i](av, lst);
-			return (SUCCESS);
-		}
-		i++;
-	}
-	return (FAILURE);
-}
-
 int			exec_command(char **av, t_list **lst)
 {
 	if (*av == NULL)
 		return (SUCCESS);
-	if (ft_exec_builtin(av, lst) == FAILURE)
+	if (exec_builtin(av, lst) == FAILURE)
 	{
-		if (ft_exec_bin(av, lst) == FAILURE)
+		if (exec_bin(av, lst) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);
@@ -139,8 +50,12 @@ int			main(int ac, char **av, char **envp)
 {
 	t_list	*lst;
 
-	(void)ac;
 	(void)av;
+	if (ac >= 2)
+	{
+		ft_putendl_fd("minishell: too many arguments", 2);
+		return (EXIT_FAILURE);
+	}
 	lst = NULL;
 	ft_bzero(&lst, sizeof(lst));
 	get_env_lst(envp, &lst);
