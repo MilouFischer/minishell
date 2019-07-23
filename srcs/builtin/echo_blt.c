@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:40:36 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 13:12:57 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		ft_process_av(char **av, size_t *index, uint8_t *flags)
 		if (ft_check_arg(av[*index]) == FALSE)
 			return ;
 		if (ft_strchr(av[*index], 'n') != NULL)
-			*flags |= ECHO_N;
+			*flags |= FLAG_N;
 		(*index)++;
 	}
 }
@@ -68,7 +68,7 @@ int				echo_blt(char **av, t_list **lst)
 		ft_process_av(av, &i, &flags);
 		ft_print_arg(av, i);
 	}
-	if ((flags & ECHO_N) == FALSE)
+	if ((flags & FLAG_N) == FALSE)
 		ft_putchar('\n');
 	return (SUCCESS);
 }

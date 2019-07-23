@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 11:30:54 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 13:11:44 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <stdint.h>
 # include "libft.h"
 # include "builtin.h"
-
-# define ECHO_N	0x01
 
 typedef struct	s_env
 {
