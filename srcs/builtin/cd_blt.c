@@ -68,6 +68,19 @@ static void	set_pwd_oldpwd(char *curpath, char *buf, t_list **lst, uint8_t flags
 	setenv_blt(pwd, lst);
 }
 
+static void	init_pwd(t_list **lst)
+{
+	char	buf[PATH_MAX];
+	char	*env_var[3];
+
+	if (ft_getenv("PWD", *lst) == NULL)
+	{
+		getcwd(buf, PATH_MAX);
+		put_name_val_in_tab("PWD", buf, env_var);
+		setenv_blt(env_var, lst);
+	}
+}
+
 int			cd_blt(char **av, t_list **lst)
 {
 	char	*curpath;
@@ -75,7 +88,7 @@ int			cd_blt(char **av, t_list **lst)
 	uint8_t	flags;
 
 	av++;
-	init_env(lst);
+	init_pwd(lst);
 	pwd = ft_getenv("PWD", *lst);
 	if (get_flags(&av, &flags) == FAILURE)
 		return (FAILURE);
