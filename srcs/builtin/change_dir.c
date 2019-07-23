@@ -6,13 +6,27 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 12:32:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:35:39 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:07:19 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static int	check_each_file(char **tab)
+static void	put_error(char *err_str, char *path, int error)
+{
+	ft_putstr_fd(err_str, 2);
+	ft_putstr_fd(path, 2);
+	if (error == NOTFOUND)
+		ft_putendl_fd(": No such file or directory", 2);
+	else if (error == NOPERM)
+		ft_putendl_fd(": Permission denied", 2);
+	else if (error == NODIR)
+		ft_putendl_fd(": Not a directory", 2);
+	else if (error == EPATH)
+		ft_putendl_fd(": Path too long", 2);
+}
+
+static int	check_each_file(char **tab, int *error)
 {
 	char	*tmp_path;
 	size_t	i;
@@ -23,7 +37,11 @@ static int	check_each_file(char **tab)
 	{
 		tmp_path = ft_join_free(tmp_path, "/", 1);
 		tmp_path = ft_join_free(tmp_path, tab[i], 1);
-		if (access(tmp_path, F_OK | R_OK) != SUCCESS)
+		if (access(tmp_path, F_OK) != SUCCESS)
+			*error = NOTFOUND;
+		else if (access(tmp_path, R_OK) != SUCCESS)
+			*error = NOPERM;
+		if (*error != 0)
 		{
 			ft_strdel(&tmp_path);
 			ft_free_tab(tab);
@@ -35,7 +53,7 @@ static int	check_each_file(char **tab)
 	return (SUCCESS);
 }
 
-static int	check_access(char *path)
+static int	check_access(char *path, int *error)
 {
 	char	**tab;
 
@@ -45,7 +63,7 @@ static int	check_access(char *path)
 	tab = ft_strsplit(path, '/');
 	if (tab == NULL)
 		return (FAILURE);
-	if (check_each_file(tab) == FAILURE)
+	if (check_each_file(tab, error) != SUCCESS)
 		return (FAILURE);
 	ft_free_tab(tab);
 	return (SUCCESS);
@@ -79,12 +97,14 @@ static int	check_pathmax(char **curpath, char *dir_op, t_list *lst)
 int			change_dir(char *curpath, char *dir_op, t_list **lst)
 {
 	int		ret;
+	int		error;
 
+	error = 0;
 	if ((ret = check_pathmax(&curpath, dir_op, *lst)) == FAILURE)
-		ft_putendl_fd("minishell: cd: pathname too long", 2);
-	else if ((ret = check_access(curpath)) == FAILURE)
-		ft_putendl_fd("minishell: cd: cannot access file", 2);
+		put_error("minishell: cd: ", dir_op, EPATH);
+	else if ((ret = check_access(curpath, &error)) == FAILURE)
+		put_error("minishell: cd: ", dir_op, error);
 	else if ((ret = chdir(curpath)) == FAILURE)
-		ft_putendl_fd("minishell: cd: cannot change working directory", 2);
+		put_error("minishell: cd: ", dir_op, NODIR);
 	return (ret);
 }

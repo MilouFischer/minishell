@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 13:47:55 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:12:19 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static int		ft_check_arg(char *arg)
 	{
 		if (arg[i] != 'P')
 		{
-			ft_putendl_fd("minishell: cd: invalid option", 2);
+			ft_putstr_fd("minishell: cd: -", 2);
+			ft_putchar_fd(arg[i], 2);
+			ft_putstr_fd(": Invalid option", 2);
 			ft_putendl_fd("usage: cd [-P] [directory]", 2);
 			return (FALSE);
 		}
@@ -76,7 +78,7 @@ int			cd_blt(char **av, t_list **lst)
 		return (FAILURE);
 	if (ft_tablen(av) > 1)
 	{
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		ft_putendl_fd("minishell: cd: Too many arguments", 2);
 		return (FAILURE);
 	}
 	curpath = get_path(*av, *lst);
