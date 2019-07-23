@@ -6,25 +6,30 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 09:45:13 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 15:29:37 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:50:06 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static int		ft_check_arg(char *arg)
+static int		ft_check_arg(char *arg, uint8_t *flags)
 {
 	size_t	i;
 
 	i = 1;
 	while (arg[i] != '\0')
 	{
-		if (arg[i] != 'P')
+		*flags = 0;
+		if (arg[i] == 'P')
+			*flags |= FLAG_P;
+		else if (arg[i] == 'L')
+			*flags |= FLAG_L;
+		else
 		{
 			ft_putstr_fd("minishell: cd: -", 2);
 			ft_putchar_fd(arg[i], 2);
 			ft_putendl_fd(": Invalid option", 2);
-			ft_putendl_fd("usage: cd [-P] [directory]", 2);
+			ft_putendl_fd("usage: cd [-L|-P] [directory]", 2);
 			return (FALSE);
 		}
 		i++;
@@ -43,10 +48,8 @@ static int	get_flags(char ***av, uint8_t *flags)
 			(*av)++;
 			return (SUCCESS);
 		}
-		else if (ft_check_arg(**av) == FALSE)
+		else if (ft_check_arg(**av, flags) == FALSE)
 			return (FAILURE);
-		else
-			*flags |= FLAG_P;
 		(*av)++;
 	}
 	return (SUCCESS);

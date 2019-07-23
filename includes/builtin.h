@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:50 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 15:00:01 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:49:20 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define PRINTENV_BLT	printenv_blt
 # define FLAG_N			0x01
 # define FLAG_P			0x02
+# define FLAG_L			0x04
 # define NODIR			1
 # define NOTFOUND		2
 # define NOPERM			3
