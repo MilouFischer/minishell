@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/24 13:47:09 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/24 13:55:10 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,15 @@ int			exec_bin(char **av, t_list **lst)
 		if (waitpid(pid, &status, WUNTRACED) > 0)
 		{
 			if (WIFSIGNALED(status))
+			{
+				ft_putchar_fd('\n', 2);
 				return (WEXITSTATUS(status));
+			}
 		}
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (exec(*lst, av) == FAILURE)
 			return (FAILURE);
 	}

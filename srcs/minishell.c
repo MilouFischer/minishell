@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/24 13:47:21 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/24 14:09:30 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int			main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ft_putstr_fd("$> ", 2);
+		signal(SIGINT, SIG_IGN);
 		if (process_command(&lst) == FAILURE)
 			return (EXIT_FAILURE);
 	}
