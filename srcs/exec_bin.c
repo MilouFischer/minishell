@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 10:36:08 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/24 13:47:09 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,13 @@ int			exec_bin(char **av, t_list **lst)
 	if (pid == FAILURE)
 		return (FAILURE);
 	if (pid > 0)
-		wait(&status);
+	{
+		if (waitpid(pid, &status, WUNTRACED) > 0)
+		{
+			if (WIFSIGNALED(status))
+				return (WEXITSTATUS(status));
+		}
+	}
 	if (pid == 0)
 	{
 		if (exec(*lst, av) == FAILURE)
