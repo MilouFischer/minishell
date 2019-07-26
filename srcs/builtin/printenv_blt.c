@@ -18,10 +18,10 @@ int		printenv_blt(char **av, t_list **lst)
 
 	if (ft_strequ(av[0], "printenv") == TRUE)
 		av++;
-	if (*lst == NULL)
-		return (FAILURE);
 	if (av != NULL && *av == NULL)
 		ft_lstprint(*lst, get_content_to_print);
+	else if (*lst == NULL)
+		return (FAILURE);
 	else
 	{
 		while (av != NULL && *av != NULL)

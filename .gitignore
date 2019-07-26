@@ -2,4 +2,6 @@
 *.a
 main.c
 *.*.swp
+*.*.swo
 *.dSYM
+minishell

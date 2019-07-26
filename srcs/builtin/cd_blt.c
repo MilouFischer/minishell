@@ -39,6 +39,7 @@ static int		ft_check_arg(char *arg, uint8_t *flags)
 
 static int	get_flags(char ***av, uint8_t *flags)
 {
+	*flags = 0;
 	while (**av != NULL && ***av == '-')
 	{
 		if ((**av)[1] == '\0')

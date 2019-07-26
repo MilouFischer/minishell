@@ -38,6 +38,7 @@ static int		ft_check_arg(char *arg, uint8_t *flags)
 
 static int	get_flags(char ***av, uint8_t *flags)
 {
+	*flags = 0;
 	while (**av != NULL && ***av == '-')
 	{
 		if (ft_strequ(**av, "--") == TRUE)
@@ -95,7 +96,6 @@ int			env_blt(char **av, t_list **lst)
 {
 	char	*tab[2];
 	t_list	*local_lst;
-	t_list	*head;
 	uint8_t	flags;
 
 	av++;
@@ -106,7 +106,6 @@ int			env_blt(char **av, t_list **lst)
 		local_lst = NULL;
 	else
 		get_lst_cpy(&local_lst, *lst);
-	head = local_lst;
 	change_env(&av, &local_lst);
 	if (*av != NULL)
 		exec_command(av, &local_lst);
@@ -116,6 +115,6 @@ int			env_blt(char **av, t_list **lst)
 		tab[1] = NULL;
 		exec_command(tab, &local_lst);
 	}
-	ft_lstfree(head, free_env);
+	ft_lstfree(local_lst, free_env);
 	return (SUCCESS);
 }
