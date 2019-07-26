@@ -33,6 +33,7 @@ static int	process_command(t_list **lst)
 	if (ft_get_command(&tab, *lst) == FALSE)
 	{
 		ft_free_tab(tab);
+		ft_lstfree(*lst, free_env);
 		return (FAILURE);
 	}
 	if (exec_command(tab, lst) == FAILURE)
@@ -51,6 +52,7 @@ int			main(int ac, char **av, char **envp)
 	t_list	*lst;
 
 	(void)av;
+	signal(SIGINT, SIG_IGN);
 	if (ac >= 2)
 	{
 		ft_putendl_fd("minishell: too many arguments", 2);
@@ -63,7 +65,6 @@ int			main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ft_putstr_fd("$> ", 2);
-		signal(SIGINT, SIG_IGN);
 		if (process_command(&lst) == FAILURE)
 			return (EXIT_FAILURE);
 	}
