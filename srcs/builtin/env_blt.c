@@ -6,52 +6,11 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 16:15:11 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/27 12:52:08 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-
-static int		ft_check_arg(char *arg, uint8_t *flags)
-{
-	size_t	i;
-
-	i = 1;
-	while (arg[i] != '\0')
-	{
-		*flags = 0;
-		if (arg[i] == 'i')
-			*flags |= FLAG_I;
-		else
-		{
-			ft_putstr_fd("minishell: env: -", 2);
-			ft_putchar_fd(arg[i], 2);
-			ft_putendl_fd(": Invalid option", 2);
-			ft_putstr_fd("usage: env [-i] [name=value]...", 2);
-			ft_putendl_fd("[utility [argument...]]", 2);
-			return (FALSE);
-		}
-		i++;
-	}
-	return (TRUE);
-}
-
-static int	get_flags(char ***av, uint8_t *flags)
-{
-	*flags = 0;
-	while (**av != NULL && ***av == '-')
-	{
-		if (ft_strequ(**av, "--") == TRUE)
-		{
-			(*av)++;
-			return (SUCCESS);
-		}
-		else if (ft_check_arg(**av, flags) == FALSE)
-			return (FAILURE);
-		(*av)++;
-	}
-	return (SUCCESS);
-}
 
 static void	get_new_env(char *str, t_list **lst)
 {
@@ -92,15 +51,23 @@ static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 	}
 }
 
-int			env_blt(char **av, t_list **lst)
+static void	exec_printenv(t_list **local_lst)
 {
 	char	*tab[2];
+
+	tab[0] = "printenv";
+	tab[1] = NULL;
+	exec_command(tab, local_lst);
+}
+
+int			env_blt(char **av, t_list **lst)
+{
 	t_list	*local_lst;
 	uint8_t	flags;
 
 	av++;
 	local_lst = NULL;
-	if (get_flags(&av, &flags) == FAILURE)
+	if (flags_env_blt(&av, &flags) == FAILURE)
 		return (FAILURE);
 	if ((flags & FLAG_I) == FLAG_I)
 		local_lst = NULL;
@@ -110,11 +77,7 @@ int			env_blt(char **av, t_list **lst)
 	if (*av != NULL)
 		exec_command(av, &local_lst);
 	else
-	{
-		tab[0] = "printenv";
-		tab[1] = NULL;
-		exec_command(tab, &local_lst);
-	}
+		exec_printenv(&local_lst);
 	ft_lstfree(local_lst, free_env);
 	return (SUCCESS);
 }

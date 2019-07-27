@@ -44,6 +44,8 @@ SRCS += env_blt.c
 SRCS += get_path.c
 SRCS += clean_path.c
 SRCS += change_dir.c
+SRCS += flags_env_blt.c
+SRCS += flags_cd_blt.c
 
 #=====================================OBJS======================================
 
