@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 11:56:37 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/30 13:56:11 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 16:20:01 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	remove_tabulation(char **av)
 	size_t	i;
 	char	**tab;
 
+	if (av == NULL)
+		return ;
 	while (*av != NULL)
 	{
 		i = 0;
