@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 11:56:37 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/24 13:08:41 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/27 15:58:49 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int			ft_get_command(char ***av, t_list *lst)
 	char *buf;
 
 	buf = NULL;
-	if (get_next_line(0, &buf) == FALSE)
+	if (get_next_line(0, &buf) == FAILURE)
 	{
 		ft_strdel(&buf);
 		ft_putstr("minishell: error read input\n");
@@ -42,10 +42,7 @@ int			ft_get_command(char ***av, t_list *lst)
 	*av = ft_strsplit(buf, ' ');
 	ft_strdel(&buf);
 	if (*av == NULL)
-	{
-		ft_putstr("minishell: error read input\n");
-		return (FALSE);
-	}
+		exit_blt(*av, &lst);
 	check_expansion(*av, lst);
 	return (TRUE);
 }

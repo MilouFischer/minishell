@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/24 13:55:10 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/27 18:03:34 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,50 +44,53 @@ static int	exec(t_list *lst, char **av)
 {
 	char	**env;
 	char	*path;
+	char	*error;
 
 	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
 	{
 		path = av[0];
-		if (execve(path, av, env) != FAILURE)
-		{
-			ft_strdel(&path);
-			return (SUCCESS);
-		}
+		execve(path, av, env);
+		ft_strdel(&path);
 	}
 	else
-	{
-		if (exec_path(lst, av, env) == SUCCESS)
-			return (SUCCESS);
-	}
-	return (FAILURE);
+		exec_path(lst, av, env);
+	error = ft_asprintf("minishell: command not found: %s\n", av[0]);
+	ft_putstr_fd(error, 2);
+	ft_strdel(&error);
+	exit(EXIT_FAILURE);
 }
 
 int			exec_bin(char **av, t_list **lst)
 {
-	pid_t	pid;
 	int		status;
+	int		ret;
 
 	status = 0;
 	pid = fork();
 	if (pid == FAILURE)
 		return (FAILURE);
-	if (pid > 0)
-	{
-		if (waitpid(pid, &status, WUNTRACED) > 0)
-		{
-			if (WIFSIGNALED(status))
-			{
-				ft_putchar_fd('\n', 2);
-				return (WEXITSTATUS(status));
-			}
-		}
-	}
-	if (pid == 0)
+	else if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (exec(*lst, av) == FAILURE)
 			return (FAILURE);
+	}
+	else if (pid > 0)
+	{
+		if (waitpid(pid, &status, WUNTRACED) == pid)
+		{
+			if (WIFSIGNALED(status))
+			{
+				ret = WTERMSIG(status);
+				if (ret == SIGSEGV)
+					ft_putendl_fd("segmentation fault", 2);
+				return (ret);
+			}
+			else if (WIFEXITED(status))
+				return (WEXITSTATUS(status));
+		}
+		return (FAILURE);
 	}
 	return (SUCCESS);
 }

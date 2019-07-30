@@ -6,28 +6,26 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/24 14:09:30 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/27 18:03:32 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+pid_t		pid;
 
 int			exec_command(char **av, t_list **lst)
 {
 	if (*av == NULL)
 		return (SUCCESS);
 	if (exec_builtin(av, lst) == FAILURE)
-	{
-		if (exec_bin(av, lst) == FAILURE)
-			return (FAILURE);
-	}
+		return (exec_bin(av, lst));
 	return (SUCCESS);
 }
 
 static int	process_command(t_list **lst)
 {
 	char	**tab;
-	char	*error;
 
 	tab = NULL;
 	if (ft_get_command(&tab, *lst) == FALSE)
@@ -36,15 +34,25 @@ static int	process_command(t_list **lst)
 		ft_lstfree(*lst, free_env);
 		return (FAILURE);
 	}
-	if (exec_command(tab, lst) == FAILURE)
+	if (exec_command(tab, lst) != SUCCESS)
 	{
-		error = ft_asprintf("minishell: command not found: %s\n", tab[0]);
-		ft_putstr_fd(error, 2);
-		ft_strdel(&error);
-		exit(EXIT_FAILURE);
+		ft_free_tab(tab);
+		return (FAILURE);
 	}
 	ft_free_tab(tab);
 	return (SUCCESS);
+}
+
+void	sigint_handler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		if (pid == 0)
+			ft_putstr_fd("\n$> ", 2);
+		else
+			ft_putstr_fd("\n", 2);
+	}
+	pid = 0;
 }
 
 int			main(int ac, char **av, char **envp)
@@ -52,7 +60,7 @@ int			main(int ac, char **av, char **envp)
 	t_list	*lst;
 
 	(void)av;
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sigint_handler);
 	if (ac >= 2)
 	{
 		ft_putendl_fd("minishell: too many arguments", 2);
@@ -64,9 +72,9 @@ int			main(int ac, char **av, char **envp)
 	init_env(&lst);
 	while (1)
 	{
+		pid = 0;
 		ft_putstr_fd("$> ", 2);
-		if (process_command(&lst) == FAILURE)
-			return (EXIT_FAILURE);
+		process_command(&lst);
 	}
 	return (EXIT_SUCCESS);
 }
