@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:53:47 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 13:45:06 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 13:08:25 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	put_name_val_in_tab(char *name, char *value, char **env_var)
 
 void	init_env(t_list **lst)
 {
+	int		lvl_val;
 	char	buf[PATH_MAX];
 	char	*shlvl;
-	int		lvl_val;
 	char	*env_var[3];
 
 	if (ft_getenv("PWD", *lst) == NULL)
@@ -41,7 +41,10 @@ void	init_env(t_list **lst)
 	else
 	{
 		lvl_val = ft_atoi(shlvl);
-		shlvl = ft_itoa(lvl_val + 1);
+		if (lvl_val + 1 > 0)
+			shlvl = ft_itoa(lvl_val + 1);
+		else
+			shlvl = ft_strdup("0");
 		put_name_val_in_tab("SHLVL", shlvl, env_var);
 		setenv_blt(env_var, lst);
 		ft_strdel(&shlvl);
