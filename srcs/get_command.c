@@ -6,11 +6,31 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 11:56:37 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/27 15:58:49 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 12:55:51 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	remove_tabulation(char **av)
+{
+	size_t	i;
+	char	**tab;
+
+	while (*av != NULL)
+	{
+		i = 0;
+		tab = ft_strsplit(*av, '	');
+		ft_strdel(av);
+		while (tab[i] != NULL)
+		{
+			*av = ft_join_free(*av, tab[i], 1);
+			i++;
+		}
+		ft_free_tab(tab);
+		av++;
+	}
+}
 
 static void	check_expansion(char **av, t_list *lst)
 {
@@ -40,6 +60,7 @@ int			ft_get_command(char ***av, t_list *lst)
 	}
 	get_next_line(-42, NULL);
 	*av = ft_strsplit(buf, ' ');
+	remove_tabulation(*av);
 	ft_strdel(&buf);
 	if (*av == NULL)
 		exit_blt(*av, &lst);
