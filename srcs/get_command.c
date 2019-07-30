@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 11:56:37 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/30 12:55:51 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 13:56:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	check_expansion(char **av, t_list *lst)
 	{
 		if (av[i][0] == '~')
 			process_tilde(&av[i], lst);
-		else if (av[i][0] == '$')
+		if (ft_strchr(av[i], '$') != NULL)
 			process_dollar(&av[i], lst);
 		i++;
 	}

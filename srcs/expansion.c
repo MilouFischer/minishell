@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:42:25 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 15:27:02 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,50 +48,52 @@ void		process_tilde(char **av, t_list *lst)
 	ft_strdel(&tilde_part);
 }
 
-static void	check_dollar_operand(char **av, size_t *i, char **new_av,
-			t_list *lst)
+static char	*check_dollar_operand(char **av, size_t *i, t_list *lst)
 {
 	char	*operand;
 	char	*env;
+	char	*new_av;
 	size_t	op_i;
 
-	operand = NULL;
 	(*i)++;
 	op_i = *i;
+	new_av = NULL;
+	operand = NULL;
 	if ((*av)[*i] != '\0' && (*av)[*i] != '$')
 	{
 		while ((*av)[op_i] != '\0' && ft_isalnum((*av)[op_i]) == TRUE)
-			op_i++;
-		operand = ft_strndup(*av + *i, op_i - *i);
-		*i = op_i;
-		if ((env = ft_getenv(operand, lst)) != NULL)
 		{
+			op_i++;
+			operand = ft_strndup(*av + *i, op_i - *i);
+			if ((env = ft_getenv(operand, lst)) != NULL)
+			{
+				*i = op_i;
+				ft_strdel(&operand);
+				new_av = ft_strdup(env);
+				return (new_av);
+			}
 			ft_strdel(&operand);
-			operand = ft_strdup(env);
 		}
-		*new_av = ft_join_free(*new_av, operand, 3);
 	}
 	else
-		*new_av = ft_join_free(*new_av, "$", 1);
+		new_av = ft_strdup("$");
+	return (new_av);
 }
 
 void		process_dollar(char **av, t_list *lst)
 {
 	size_t	i;
+	char	*tmp;
 	char	*new_av;
 
 	i = 0;
 	new_av = NULL;
-	while ((*av)[i] != '\0')
-	{
-		if ((*av)[i] == '$')
-			check_dollar_operand(av, &i, &new_av, lst);
-		else
-			i++;
-	}
-	if (new_av != NULL)
-	{
-		ft_strdel(av);
-		*av = new_av;
-	}
+	while ((*av)[i] != '\0' && (*av)[i] != '$')
+		i++;
+	tmp = ft_strsub(*av, 0, i);
+	while ((*av)[i] == '$')
+		new_av = ft_join_free(new_av, check_dollar_operand(av, &i, lst), 3);
+	new_av = ft_join_free(tmp, new_av, 3);
+	ft_strdel(av);
+	*av = new_av;
 }
