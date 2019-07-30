@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/30 15:27:02 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/30 15:32:19 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void		process_dollar(char **av, t_list *lst)
 	tmp = ft_strsub(*av, 0, i);
 	while ((*av)[i] == '$')
 		new_av = ft_join_free(new_av, check_dollar_operand(av, &i, lst), 3);
+	if ((*av)[i] == '/')
+		new_av = ft_join_free(new_av, (*av) + i, 1);
 	new_av = ft_join_free(tmp, new_av, 3);
 	ft_strdel(av);
 	*av = new_av;
