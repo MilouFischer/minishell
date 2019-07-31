@@ -19,6 +19,7 @@ CC = gcc
 CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -Werror
+CFLAGS += -fsanitize=address,undefined -g3
 COMPILE += $(CC) -c
 
 #=====================================SRCS======================================

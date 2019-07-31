@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/30 16:13:01 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 15:27:13 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,39 @@ int			exec_command(char **av, t_list **lst)
 
 static int	process_command(t_list **lst)
 {
-	char	**tab;
+	char	**av;
+	size_t	i;
+	char	*buf;
+	char	**tab_operand;
 
-	tab = NULL;
-	if (ft_get_command(&tab, *lst) == FALSE)
+	i = 0;
+	av = NULL;
+	buf = NULL;
+	if (get_next_line(0, &buf) == FAILURE)
 	{
-		ft_free_tab(tab);
-		ft_lstfree(*lst, free_env);
+		ft_strdel(&buf);
+		ft_putstr("minishell: error read input\n");
 		return (FAILURE);
 	}
-	if (exec_command(tab, lst) != SUCCESS)
+	get_next_line(-42, NULL);
+	tab_operand = ft_strsplit(buf, ';');
+	while (tab_operand[i] != NULL)
 	{
-		ft_free_tab(tab);
-		return (FAILURE);
+		if (ft_get_command(&av, tab_operand[i], *lst) == FALSE)
+		{
+			ft_free_tab(av);
+			ft_lstfree(*lst, free_env);
+			return (FAILURE);
+		}
+		if (exec_command(av, lst) != SUCCESS)
+		{
+			ft_free_tab(av);
+			return (FAILURE);
+		}
+		ft_free_tab(av);
+		i++;
 	}
-	ft_free_tab(tab);
+	ft_free_tab(tab_operand);
 	return (SUCCESS);
 }
 

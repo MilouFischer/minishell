@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 13:11:44 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 15:28:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			get_env_lst(char **envp, t_list **lst);
 void			get_content_to_print(t_list *lst, t_list **elem);
 char			*get_content_to_tab(t_list *lst);
 void			free_env(void *content, size_t content_size);
-int				ft_get_command(char ***av, t_list *lst);
+int				ft_get_command(char ***av, char *buf, t_list *lst);
 char			*ft_getenv(char *env_name, t_list *lst);
 int				exec_command(char **av, t_list **lst);
 t_list			*cpy_lst(t_list	*lst);
