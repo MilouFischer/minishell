@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 15:27:13 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 15:56:36 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,14 @@ int			exec_command(char **av, t_list **lst)
 	return (SUCCESS);
 }
 
-static int	process_command(t_list **lst)
+static int	split_and_exec_command(char *buf, t_list **lst)
 {
+	char	**tab_operand;
 	char	**av;
 	size_t	i;
-	char	*buf;
-	char	**tab_operand;
 
 	i = 0;
 	av = NULL;
-	buf = NULL;
-	if (get_next_line(0, &buf) == FAILURE)
-	{
-		ft_strdel(&buf);
-		ft_putstr("minishell: error read input\n");
-		return (FAILURE);
-	}
-	get_next_line(-42, NULL);
 	tab_operand = ft_strsplit(buf, ';');
 	while (tab_operand[i] != NULL)
 	{
@@ -58,6 +49,25 @@ static int	process_command(t_list **lst)
 		i++;
 	}
 	ft_free_tab(tab_operand);
+	return (SUCCESS);
+}
+
+static int	process_command(t_list **lst)
+{
+	char	*buf;
+
+	buf = NULL;
+	if (get_next_line(0, &buf) == FAILURE)
+	{
+		ft_strdel(&buf);
+		ft_putstr("minishell: error read input\n");
+		return (FAILURE);
+	}
+	get_next_line(-42, NULL);
+	if (buf == NULL)
+		exit_blt(NULL, lst);
+	if (split_and_exec_command(buf, lst) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
