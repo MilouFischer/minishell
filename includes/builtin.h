@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:50 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/27 17:46:23 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 17:42:05 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define NOTFOUND		2
 # define NOPERM			3
 # define EPATH			4
+# define S_LONG_MAX		"9223372036854775807"
 
 int		exit_blt(char **av, t_list **lst);
 int		echo_blt(char **av, t_list **lst);
