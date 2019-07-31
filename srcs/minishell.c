@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 17:27:42 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 18:06:00 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int			main(int ac, char **av, char **envp)
 
 	(void)av;
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (ac >= 2)
 	{
 		ft_putendl_fd("minishell: too many arguments", 2);

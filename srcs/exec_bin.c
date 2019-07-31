@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 16:24:02 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 18:15:59 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	exec_path(t_list *lst, char **av, char **env)
 	if (lst == NULL)
 		return (FAILURE);
 	path_tab = ft_strsplit(((t_env*)(lst->content))->value, ':');
+	if (path_tab == NULL)
+		return (FAILURE);
 	while (path_tab[i] != NULL)
 	{
 		path = ft_asprintf("%s/%s", path_tab[i], av[0]);

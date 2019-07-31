@@ -6,16 +6,16 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 12:32:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 15:41:15 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 18:42:10 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static void	put_error(char *err_str, char *path, int error)
+static void	put_error(char *err_str, char *path, int error, t_list *lst)
 {
 	ft_putstr_fd(err_str, 2);
-	if (ft_strequ(path, "-"))
+	if (ft_strequ(path, "-") == TRUE && ft_getenv("OLDPWD", lst) == NULL)
 	{
 		ft_putendl_fd("OLDPWD not set", 2);
 		return ;
@@ -106,10 +106,10 @@ int			change_dir(char *curpath, char *dir_op, t_list **lst)
 
 	error = 0;
 	if ((ret = check_pathmax(&curpath, dir_op, *lst)) == FAILURE)
-		put_error("minishell: cd: ", dir_op, EPATH);
+		put_error("minishell: cd: ", dir_op, EPATH, *lst);
 	else if ((ret = check_access(curpath, &error)) == FAILURE)
-		put_error("minishell: cd: ", dir_op, error);
+		put_error("minishell: cd: ", dir_op, error, *lst);
 	else if ((ret = chdir(curpath)) == FAILURE)
-		put_error("minishell: cd: ", dir_op, NODIR);
+		put_error("minishell: cd: ", dir_op, NODIR, *lst);
 	return (ret);
 }
