@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 11:56:37 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 15:56:39 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 17:21:09 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			ft_get_command(char ***av, char *buf, t_list *lst)
 	*av = ft_strsplit(buf, ' ');
 	remove_tabulation(*av);
 	if (*av == NULL)
-		exit_blt(*av, &lst);
+		return (FALSE);
 	check_expansion(*av, lst);
 	return (TRUE);
 }

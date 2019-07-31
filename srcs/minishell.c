@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 15:56:36 by efischer         ###   ########.fr       */
+/*   Updated: 2019/07/31 17:27:42 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ static int	process_command(t_list **lst)
 	if (buf == NULL)
 		exit_blt(NULL, lst);
 	if (split_and_exec_command(buf, lst) == FAILURE)
+	{
+		ft_strdel(&buf);
 		return (FAILURE);
+	}
+	ft_strdel(&buf);
 	return (SUCCESS);
 }
 
