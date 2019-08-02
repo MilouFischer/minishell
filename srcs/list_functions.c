@@ -16,9 +16,13 @@ void	get_content_to_print(t_list *lst, t_list **elem)
 {
 	char	*tmp;
 
+	tmp = NULL;
 	ft_bzero(elem, sizeof(*elem));
-	tmp = ft_asprintf("%s=%s\n", ((t_env*)(lst->content))->name,
-	((t_env*)(lst->content))->value);
+	if (ft_strequ(((t_env*)(lst->content))->name, "RET") == FALSE)
+	{
+		tmp = ft_asprintf("%s=%s\n", ((t_env*)(lst->content))->name,
+		((t_env*)(lst->content))->value);
+	}
 	*elem = ft_lstnew(tmp, ft_strlen(tmp));
 	ft_strdel(&tmp);
 }

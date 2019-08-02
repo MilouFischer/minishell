@@ -16,11 +16,13 @@ pid_t		pid;
 
 int			exec_command(char **av, t_list **lst)
 {
+	int		ret;
+
 	if (*av == NULL)
 		return (SUCCESS);
-	if (exec_builtin(av, lst) == FAILURE)
-		return (exec_bin(av, lst));
-	return (SUCCESS);
+	if ((ret = exec_builtin(av, lst)) == FAILURE)
+		ret = exec_bin(av, lst);
+	return (ret);
 }
 
 static int	split_and_exec_command(char *buf, t_list **lst)
@@ -28,6 +30,7 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 	char	**tab_operand;
 	char	**av;
 	size_t	i;
+	int		ret;
 
 	i = 0;
 	av = NULL;
@@ -44,22 +47,23 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 		}
 		if (ft_strequ(*av, "exit") == TRUE)
 			ft_free_tab(tab_operand);
-		if (exec_command(av, lst) != SUCCESS)
+		if ((ret = exec_command(av, lst)) != SUCCESS)
 		{
 			ft_free_tab(av);
 			ft_free_tab(tab_operand);
-			return (FAILURE);
+			return (ret);
 		}
 		ft_free_tab(av);
 		i++;
 	}
 	ft_free_tab(tab_operand);
-	return (SUCCESS);
+	return (ret);
 }
 
 static int	process_command(t_list **lst)
 {
 	char	*buf;
+	int		ret;
 
 	buf = NULL;
 	if (get_next_line(0, &buf) == FAILURE)
@@ -71,8 +75,8 @@ static int	process_command(t_list **lst)
 	get_next_line(-42, NULL);
 	if (buf == NULL)
 		exit_blt(NULL, lst);
-	if (split_and_exec_command(buf, lst) == FAILURE)
-		return (FAILURE);
+	if ((ret = split_and_exec_command(buf, lst)) != SUCCESS)
+		return (ret);
 	return (SUCCESS);
 }
 
@@ -88,16 +92,36 @@ void	sigint_handler(int signo)
 	pid = 0;
 }
 
-int			main(int ac, char **av, char **envp)
+static void	init_sig(void)
 {
-	t_list	*lst;
-
-	(void)av;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGCONT, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
+}
+
+static void	set_ret(int ret, t_list **lst)
+{
+	char	*tab[4];
+	char	*str_ret;
+
+	str_ret = ft_itoa(ret);
+	tab[0] = "RET";
+	tab[1] = str_ret;
+	tab[2] = "1";
+	tab[3] = NULL;
+	setenv_blt(tab, lst);
+	ft_strdel(&str_ret);
+}
+
+int			main(int ac, char **av, char **envp)
+{
+	t_list	*lst;
+	int		ret;
+
+	(void)av;
+	init_sig();
 	if (ac >= 2)
 	{
 		ft_putendl_fd("minishell: too many arguments", 2);
@@ -111,7 +135,8 @@ int			main(int ac, char **av, char **envp)
 	{
 		pid = 0;
 		ft_putstr_fd("$> ", 2);
-		process_command(&lst);
+		ret = process_command(&lst);
+		set_ret(ret, &lst);
 	}
 	return (EXIT_SUCCESS);
 }

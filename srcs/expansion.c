@@ -59,6 +59,8 @@ static char	*check_dollar_operand(char **av, size_t *i, t_list *lst)
 	op_i = *i;
 	new_av = NULL;
 	operand = NULL;
+	if ((*av)[*i] == '?')
+		new_av = ft_strdup(ft_getenv("RET", lst));
 	if ((*av)[*i] != '\0' && (*av)[*i] != '$')
 	{
 		while ((*av)[op_i] != '\0' && ft_isalnum((*av)[op_i]) == TRUE)

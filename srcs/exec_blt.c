@@ -24,10 +24,7 @@ int		exec_builtin(char **av, t_list **lst)
 	while (i < NB_OF_BLT)
 	{
 		if (ft_strequ(av[0], builtin[i]) == TRUE)
-		{
-			f_blt[i](av, lst);
-			return (SUCCESS);
-		}
+			return (f_blt[i](av, lst));
 		i++;
 	}
 	return (FAILURE);

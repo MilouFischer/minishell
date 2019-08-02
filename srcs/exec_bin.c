@@ -60,6 +60,36 @@ static int	exec(t_list *lst, char **av)
 	return (FAILURE);
 }
 
+static int	interrupted_exec(int status)
+{
+	int		ret;
+
+	if (WIFSIGNALED(status))
+	{
+		ret = WTERMSIG(status);
+		if (ret == SIGSEGV)
+			ft_putendl_fd("\nsegmentation fault", 2);
+		if (ret == SIGABRT)
+			ft_putendl_fd("\nabort", 2);
+		if (ret == SIGILL)
+			ft_putendl_fd("\nillegal option", 2);
+		if (ret == SIGFPE)
+			ft_putendl_fd("\nfloating point exception", 2);
+		if (ret == SIGPIPE)
+			ft_putendl_fd("", 2);
+		if (ret == SIGALRM)
+			ft_putendl_fd("\nalert signal", 2);
+		if (ret == SIGTERM)
+			ft_putendl_fd("\ncomplet", 2);
+		if (ret == SIGKILL)
+			ft_putendl_fd("\nkilled", 2);
+		return (ret);
+	}
+	else if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (FALSE);
+}
+
 int			exec_bin(char **av, t_list **lst)
 {
 	int		status;
@@ -79,31 +109,10 @@ int			exec_bin(char **av, t_list **lst)
 	{
 		if (waitpid(pid, &status, WUNTRACED) == pid)
 		{
-			if (WIFSIGNALED(status))
-			{
-				ret = WTERMSIG(status);
-				if (ret == SIGSEGV)
-					ft_putendl_fd("\nsegmentation fault", 2);
-				if (ret == SIGABRT)
-					ft_putendl_fd("\nabort", 2);
-				if (ret == SIGILL)
-					ft_putendl_fd("\nillegal option", 2);
-				if (ret == SIGFPE)
-					ft_putendl_fd("\nfloating point exception", 2);
-				if (ret == SIGPIPE)
-					ft_putendl_fd("", 2);
-				if (ret == SIGALRM)
-					ft_putendl_fd("\nalert signal", 2);
-				if (ret == SIGTERM)
-					ft_putendl_fd("\ncomplet", 2);
-				if (ret == SIGKILL)
-					ft_putendl_fd("\nkilled", 2);
+			if ((ret = interrupted_exec(status)) != FALSE)
 				return (ret);
-			}
-			else if (WIFEXITED(status))
-				return (WEXITSTATUS(status));
 		}
-		return (FAILURE);
+		return (SUCCESS);
 	}
 	return (SUCCESS);
 }

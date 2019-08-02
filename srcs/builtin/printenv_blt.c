@@ -27,7 +27,8 @@ int		printenv_blt(char **av, t_list **lst)
 		while (av != NULL && *av != NULL)
 		{
 			tmp = find_env(*av++, *lst);
-			if (tmp != NULL)
+			if (tmp != NULL && ft_strequ(((t_env*)(tmp->content))->name, "RET")
+				== FALSE)
 				ft_putendl(((t_env*)(tmp->content))->value);
 		}
 	}

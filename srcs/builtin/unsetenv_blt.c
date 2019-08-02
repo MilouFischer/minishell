@@ -21,6 +21,8 @@ int		unsetenv_blt(char **av, t_list **lst)
 	head = *lst;
 	if (*av == NULL)
 		return (FAILURE);
+	if (ft_strequ(*av, "RET") == TRUE)
+		return (SUCCESS);
 	del_env = find_env(*av, *lst);
 	if (del_env == NULL)
 		return (SUCCESS);
