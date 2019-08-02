@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-static void	remove_tabulation(char **av)
-{
-	size_t	i;
-	char	**tab;
-
-	if (av == NULL)
-		return ;
-	while (*av != NULL)
-	{
-		i = 0;
-		tab = ft_strsplit(*av, '	');
-		ft_strdel(av);
-		while (tab[i] != NULL)
-		{
-			*av = ft_join_free(*av, tab[i], 1);
-			i++;
-		}
-		ft_free_tab(tab);
-		av++;
-	}
-}
-
 static void	check_expansion(char **av, t_list *lst)
 {
 	size_t	i;
@@ -51,8 +29,7 @@ static void	check_expansion(char **av, t_list *lst)
 
 int			ft_get_command(char ***av, char *buf, t_list *lst)
 {
-	*av = ft_strsplit(buf, ' ');
-	remove_tabulation(*av);
+	*av = ft_split_white_spaces(buf);
 	if (*av == NULL)
 		return (FALSE);
 	check_expansion(*av, lst);

@@ -73,7 +73,6 @@ static int	process_command(t_list **lst)
 		exit_blt(NULL, lst);
 	if (split_and_exec_command(buf, lst) == FAILURE)
 		return (FAILURE);
-	ft_strdel(&buf);
 	return (SUCCESS);
 }
 
