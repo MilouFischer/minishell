@@ -20,6 +20,10 @@ static void	put_error(char *err_str, char *path, int error, t_list *lst)
 		ft_putendl_fd("OLDPWD not set", 2);
 		return ;
 	}
+	if (ft_strequ(path, "-") == TRUE)
+		path = ft_getenv("OLDPWD", lst);
+	if (path == NULL)
+		path = ft_getenv("HOME", lst);
 	ft_putstr_fd(path, 2);
 	if (error == NOTFOUND)
 		ft_putendl_fd(": No such file or directory", 2);
