@@ -32,17 +32,22 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 	i = 0;
 	av = NULL;
 	tab_operand = ft_strsplit(buf, ';');
+	ft_strdel(&buf);
 	while (tab_operand[i] != NULL)
 	{
 		if (ft_get_command(&av, tab_operand[i], *lst) == FALSE)
 		{
 			ft_free_tab(av);
+			ft_free_tab(tab_operand);
 			ft_lstfree(*lst, free_env);
 			return (FAILURE);
 		}
+		if (ft_strequ(*av, "exit") == TRUE)
+			ft_free_tab(tab_operand);
 		if (exec_command(av, lst) != SUCCESS)
 		{
 			ft_free_tab(av);
+			ft_free_tab(tab_operand);
 			return (FAILURE);
 		}
 		ft_free_tab(av);
@@ -67,10 +72,7 @@ static int	process_command(t_list **lst)
 	if (buf == NULL)
 		exit_blt(NULL, lst);
 	if (split_and_exec_command(buf, lst) == FAILURE)
-	{
-		ft_strdel(&buf);
 		return (FAILURE);
-	}
 	ft_strdel(&buf);
 	return (SUCCESS);
 }

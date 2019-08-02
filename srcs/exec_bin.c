@@ -46,7 +46,6 @@ static int	exec(t_list *lst, char **av)
 {
 	char	**env;
 	char	*path;
-	char	*error;
 
 	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
@@ -57,10 +56,8 @@ static int	exec(t_list *lst, char **av)
 	}
 	else
 		exec_path(lst, av, env);
-	error = ft_asprintf("minishell: command not found: %s\n", av[0]);
-	ft_putstr_fd(error, 2);
-	ft_strdel(&error);
-	exit(EXIT_FAILURE);
+	ft_dprintf(2, "minishell: command not found: %s\n", av[0]);
+	return (FAILURE);
 }
 
 int			exec_bin(char **av, t_list **lst)
