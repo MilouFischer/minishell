@@ -33,7 +33,6 @@ static void	change_env(char ***av, t_list **lst)
 		if ((**av)[0] == '=')
 			return ;
 		get_new_env(**av, lst);
-		ft_strdel(*av);
 		(*av)++;
 	}
 }
