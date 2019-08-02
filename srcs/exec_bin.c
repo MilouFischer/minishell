@@ -83,7 +83,21 @@ int			exec_bin(char **av, t_list **lst)
 			{
 				ret = WTERMSIG(status);
 				if (ret == SIGSEGV)
-					ft_putendl_fd("segmentation fault", 2);
+					ft_putendl_fd("\nsegmentation fault", 2);
+				if (ret == SIGABRT)
+					ft_putendl_fd("\nabort", 2);
+				if (ret == SIGILL)
+					ft_putendl_fd("\nillegal option", 2);
+				if (ret == SIGFPE)
+					ft_putendl_fd("\nfloating point exception", 2);
+				if (ret == SIGPIPE)
+					ft_putendl_fd("", 2);
+				if (ret == SIGALRM)
+					ft_putendl_fd("\nalert signal", 2);
+				if (ret == SIGTERM)
+					ft_putendl_fd("\ncomplet", 2);
+				if (ret == SIGKILL)
+					ft_putendl_fd("\nkilled", 2);
 				return (ret);
 			}
 			else if (WIFEXITED(status))

@@ -95,6 +95,9 @@ int			main(int ac, char **av, char **envp)
 	(void)av;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGCONT, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
 	if (ac >= 2)
 	{
 		ft_putendl_fd("minishell: too many arguments", 2);
