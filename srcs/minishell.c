@@ -20,7 +20,7 @@ int			exec_command(char **av, t_list **lst)
 
 	if (*av == NULL)
 		return (SUCCESS);
-	if ((ret = exec_builtin(av, lst)) == FAILURE)
+	if (exec_builtin(av, &ret, lst) == FAILURE)
 		ret = exec_bin(av, lst);
 	return (ret);
 }
@@ -47,12 +47,7 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 		}
 		if (ft_strequ(*av, "exit") == TRUE)
 			ft_free_tab(tab_operand);
-		if ((ret = exec_command(av, lst)) != SUCCESS)
-		{
-			ft_free_tab(av);
-			ft_free_tab(tab_operand);
-			return (ret);
-		}
+		ret = exec_command(av, lst);
 		ft_free_tab(av);
 		i++;
 	}

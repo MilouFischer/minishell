@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		exec_builtin(char **av, t_list **lst)
+int		exec_builtin(char **av, int *ret, t_list **lst)
 {
 	static const char	*builtin[NB_OF_BLT] = { BUILTIN };
 	static int			(*f_blt[NB_OF_BLT])(char **, t_list **) = { CD_BLT,
@@ -24,7 +24,10 @@ int		exec_builtin(char **av, t_list **lst)
 	while (i < NB_OF_BLT)
 	{
 		if (ft_strequ(av[0], builtin[i]) == TRUE)
-			return (f_blt[i](av, lst));
+		{
+			*ret = f_blt[i](av, lst);
+			return (SUCCESS);
+		}
 		i++;
 	}
 	return (FAILURE);

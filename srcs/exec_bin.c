@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	exec_path(t_list *lst, char **av, char **env)
+static void	exec_path(t_list *lst, char **av, char **env)
 {
 	char	**path_tab;
 	char	*path;
@@ -24,22 +24,18 @@ static int	exec_path(t_list *lst, char **av, char **env)
 	&& ft_strequ(((t_env*)(lst->content))->name, "PATH") == FALSE)
 		lst = lst->next;
 	if (lst == NULL)
-		return (FAILURE);
+		return ;
 	path_tab = ft_strsplit(((t_env*)(lst->content))->value, ':');
 	if (path_tab == NULL)
-		return (FAILURE);
+		return ;
 	while (path_tab[i] != NULL)
 	{
 		path = ft_asprintf("%s/%s", path_tab[i], av[0]);
-		if (execve(path, av, env) != FAILURE)
-		{
-			ft_strdel(&path);
-			return (SUCCESS);
-		}
+		execve(path, av, env);
 		ft_strdel(&path);
 		i++;
 	}
-	return (FAILURE);
+	ft_free_tab(path_tab);
 }
 
 static int	exec(t_list *lst, char **av)
@@ -56,6 +52,7 @@ static int	exec(t_list *lst, char **av)
 	}
 	else
 		exec_path(lst, av, env);
+	ft_free_tab(env);
 	ft_dprintf(2, "minishell: command not found: %s\n", av[0]);
 	return (FAILURE);
 }
@@ -103,7 +100,7 @@ int			exec_bin(char **av, t_list **lst)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (exec(*lst, av) == FAILURE)
-			return (FAILURE);
+			exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
