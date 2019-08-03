@@ -34,6 +34,7 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 
 	i = 0;
 	av = NULL;
+	ret = ft_atoi(ft_getenv("RET", *lst));
 	tab_operand = ft_strsplit(buf, ';');
 	ft_strdel(&buf);
 	while (tab_operand[i] != NULL)
@@ -94,20 +95,6 @@ static void	init_sig(void)
 	signal(SIGCONT, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
-}
-
-static void	set_ret(int ret, t_list **lst)
-{
-	char	*tab[4];
-	char	*str_ret;
-
-	str_ret = ft_itoa(ret);
-	tab[0] = "RET";
-	tab[1] = str_ret;
-	tab[2] = "1";
-	tab[3] = NULL;
-	setenv_blt(tab, lst);
-	ft_strdel(&str_ret);
 }
 
 int			main(int ac, char **av, char **envp)

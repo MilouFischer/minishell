@@ -42,6 +42,7 @@ SRCS += get_command.c
 SRCS += expansion.c
 SRCS += exec_blt.c
 SRCS += exec_bin.c
+SRCS += init_env.c
 
 #///////////////////////////////////BUILTIN/////////////////////////////////////
 

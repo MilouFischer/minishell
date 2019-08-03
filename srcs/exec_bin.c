@@ -80,7 +80,7 @@ static int	interrupted_exec(int status)
 			ft_putendl_fd("\ncomplet", 2);
 		if (ret == SIGKILL)
 			ft_putendl_fd("\nkilled", 2);
-		return (ret);
+		return (ret + 128);
 	}
 	else if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -98,7 +98,6 @@ int			exec_bin(char **av, t_list **lst)
 		return (FAILURE);
 	else if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		if (exec(*lst, av) == FAILURE)
 			exit(EXIT_FAILURE);
 	}
@@ -111,5 +110,5 @@ int			exec_bin(char **av, t_list **lst)
 		}
 		return (SUCCESS);
 	}
-	return (SUCCESS);
+	return (FAILURE);
 }

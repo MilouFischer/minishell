@@ -35,6 +35,7 @@ char			*ft_getenv(char *env_name, t_list *lst);
 int				exec_command(char **av, t_list **lst);
 t_list			*cpy_lst(t_list	*lst);
 void			init_env(t_list **lst);
+void			set_ret(int ret, t_list **lst);
 void			put_name_val_in_tab(char *name, char *value, char **env_var);
 void			process_dollar(char **av, t_list *lst);
 void			process_tilde(char **av, t_list *lst);

@@ -19,38 +19,6 @@ void	put_name_val_in_tab(char *name, char *value, char **env_var)
 	env_var[2] = NULL;
 }
 
-void	init_env(t_list **lst)
-{
-	int		lvl_val;
-	char	buf[PATH_MAX];
-	char	*shlvl;
-	char	*env_var[3];
-
-	if (ft_getenv("PWD", *lst) == NULL)
-	{
-		getcwd(buf, PATH_MAX);
-		put_name_val_in_tab("PWD", buf, env_var);
-		setenv_blt(env_var, lst);
-	}
-	shlvl = ft_getenv("SHLVL", *lst);
-	if (shlvl == NULL)
-	{
-		put_name_val_in_tab("SHLVL", "1", env_var);
-		setenv_blt(env_var, lst);
-	}
-	else
-	{
-		lvl_val = ft_atoi(shlvl);
-		if (lvl_val + 1 > 0)
-			shlvl = ft_itoa(lvl_val + 1);
-		else
-			shlvl = ft_strdup("0");
-		put_name_val_in_tab("SHLVL", shlvl, env_var);
-		setenv_blt(env_var, lst);
-		ft_strdel(&shlvl);
-	}
-}
-
 char	*ft_getenv(char *env_name, t_list *lst)
 {
 	if (env_name == NULL || lst == NULL)
