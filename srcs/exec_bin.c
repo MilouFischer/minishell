@@ -91,6 +91,7 @@ int			exec_bin(char **av, t_list **lst)
 {
 	int		status;
 	int		ret;
+	int		cur_pid;
 
 	status = 0;
 	pid = fork();
@@ -103,7 +104,8 @@ int			exec_bin(char **av, t_list **lst)
 	}
 	else if (pid > 0)
 	{
-		if (waitpid(pid, &status, WUNTRACED) == pid)
+		cur_pid = pid;
+		if (waitpid(cur_pid, &status, WUNTRACED) != 0)
 		{
 			if ((ret = interrupted_exec(status)) != FALSE)
 				return (ret);

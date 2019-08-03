@@ -95,6 +95,7 @@ static void	init_sig(void)
 	signal(SIGCONT, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }
 
 int			main(int ac, char **av, char **envp)
