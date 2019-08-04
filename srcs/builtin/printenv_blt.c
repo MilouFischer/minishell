@@ -19,7 +19,9 @@ int		printenv_blt(char **av, t_list **lst)
 	if (ft_strequ(av[0], "printenv") == TRUE)
 		av++;
 	if (av != NULL && *av == NULL)
-		ft_lstprint(*lst, get_content_to_print);
+	{
+		print_env(*lst, "printenv");
+	}
 	else if (*lst == NULL)
 		return (FAILURE);
 	else
@@ -29,7 +31,10 @@ int		printenv_blt(char **av, t_list **lst)
 			tmp = find_env(*av++, *lst);
 			if (tmp != NULL && ft_strequ(((t_env*)(tmp->content))->name, "RET")
 				== FALSE)
-				ft_putendl(((t_env*)(tmp->content))->value);
+			{
+				if (ft_putendl(((t_env*)(tmp->content))->value) == FAILURE)
+					ft_putendl_fd("minishell: printenv: write error: Bad file descriptor", 2);
+			}
 		}
 	}
 	return (SUCCESS);

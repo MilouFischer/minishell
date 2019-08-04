@@ -12,29 +12,44 @@
 
 #include "builtin.h"
 
-int		unsetenv_blt(char **av, t_list **lst)
+static void	del_env(char *av, t_list **lst)
 {
+	t_list	*del;
 	t_list	*head;
-	t_list	*del_env;
 
-	av++;
 	head = *lst;
-	if (*av == NULL)
-		return (FAILURE);
-	if (ft_strequ(*av, "RET") == TRUE)
-		return (SUCCESS);
-	del_env = find_env(*av, *lst);
-	if (del_env == NULL)
-		return (SUCCESS);
-	if (*lst == del_env)
-		*lst = del_env->next;
+	if (ft_strequ(av, "RET") == TRUE)
+		return ;
+	del = find_env(av, *lst);
+	if (del == NULL)
+		return ;
+	if (*lst == del)
+		*lst = del->next;
 	else
 	{
-		while ((*lst)->next != NULL && (*lst)->next != del_env)
+		while ((*lst)->next != NULL && (*lst)->next != del)
 			*lst = (*lst)->next;
-		(*lst)->next = del_env->next;
+		(*lst)->next = del->next;
 		*lst = head;
 	}
-	ft_lstdelone(&del_env, free_env);
+	ft_lstdelone(&del, free_env);
+}
+
+int			unsetenv_blt(char **av, t_list **lst)
+{
+	size_t	i;
+
+	av++;
+	i = 0;
+	if (*av == NULL)
+	{
+		ft_putendl_fd("minishell: unsetenv: Too few arguments", 2);
+		return (FAILURE);
+	}
+	while (av[i] != NULL)
+	{
+		del_env(av[i], lst);
+		i++;
+	}
 	return (SUCCESS);
 }

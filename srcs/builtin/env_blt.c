@@ -50,15 +50,6 @@ static void	get_lst_cpy(t_list **local_lst, t_list *lst)
 	}
 }
 
-static void	exec_printenv(t_list **local_lst)
-{
-	char	*tab[2];
-
-	tab[0] = "printenv";
-	tab[1] = NULL;
-	exec_command(tab, local_lst);
-}
-
 int			env_blt(char **av, t_list **lst)
 {
 	t_list	*local_lst;
@@ -76,7 +67,7 @@ int			env_blt(char **av, t_list **lst)
 	if (*av != NULL)
 		exec_command(av, &local_lst);
 	else
-		exec_printenv(&local_lst);
+		print_env(local_lst, "env");
 	ft_lstfree(local_lst, free_env);
 	return (SUCCESS);
 }

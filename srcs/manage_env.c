@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+void	print_env(t_list *lst, char *utility)
+{
+	if (ft_lstprint(lst, get_content_to_print) == FAILURE)
+	{
+		ft_dprintf(2, "minishell: %s: write error: Bad file descriptor\n",
+		utility);
+	}
+}
+
 void	put_name_val_in_tab(char *name, char *value, char **env_var)
 {
 	env_var[0] = name;

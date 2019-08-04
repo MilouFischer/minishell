@@ -75,7 +75,15 @@ int				setenv_blt(char **av, t_list **lst)
 	if (ft_strequ(av[0], "setenv") == TRUE)
 		av++;
 	if (*av == NULL)
+	{
+		print_env(*lst, "setenv");
 		return (SUCCESS);
+	}
+	if (ft_tablen(av) > 2 && ft_strequ(av[2], "1") == FALSE)
+	{
+		ft_putendl_fd("minishell: setenv: Too many arguments", 2);
+		return (FAILURE);
+	}
 	name = av[0];
 	val = av[1];
 	overwrite = NULL;

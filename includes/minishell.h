@@ -43,5 +43,6 @@ void			process_dollar(char **av, t_list *lst);
 void			process_tilde(char **av, t_list *lst);
 int				exec_builtin(char **av, int *ret, t_list **lst);
 int				exec_bin(char **av, t_list **lst);
+void			print_env(t_list *lst, char *utility);
 
 #endif

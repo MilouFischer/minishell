@@ -51,6 +51,15 @@ static int	check_av(char ***av, uint8_t *flags)
 	return (SUCCESS);
 }
 
+static void	print_path(char *operand, char *curpath)
+{
+	if (ft_strequ(operand, "-") == TRUE)
+	{
+		if (ft_putendl(curpath) == FAILURE)
+			ft_putendl_fd("minishell: cd: write error: Bad file descriptor", 2);
+	}
+}
+
 int			cd_blt(char **av, t_list **lst)
 {
 	char	*curpath;
@@ -72,8 +81,7 @@ int			cd_blt(char **av, t_list **lst)
 		return (FAILURE);
 	}
 	set_pwd_oldpwd(curpath, pwd, lst, flags);
-	if (ft_strequ(*av, "-") == TRUE)
-		ft_putendl(curpath);
+	print_path(*av, curpath);
 	ft_strdel(&curpath);
 	return (SUCCESS);
 }

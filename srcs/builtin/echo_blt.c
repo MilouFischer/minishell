@@ -50,7 +50,8 @@ static void		ft_print_arg(char **av, size_t i)
 			out = ft_join_free(out, " ", 1);
 		i++;
 	}
-	ft_putstr(out);
+	if (ft_putstr(out) == FAILURE)
+		ft_putendl_fd("minishell: echo: write error: Bad file descriptor", 2);
 	ft_strdel(&out);
 }
 
