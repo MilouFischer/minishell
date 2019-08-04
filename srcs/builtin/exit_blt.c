@@ -29,23 +29,24 @@ static int	compare_to_ulmax(char *str)
 	return (TRUE);
 }
 
-/*Print error with ft_dprint when it is done*/
-
 int			exit_blt(char **av, t_list **lst)
 {
 	int		status;
 
-	status = EXIT_SUCCESS;
+	status = ft_atoi(ft_getenv("RET", *lst));
 	ft_putendl_fd("exit", 2);
 	if (av != NULL && av[1] != NULL && (ft_str_is_numeric(av[1]) == FALSE
 		|| compare_to_ulmax(av[1]) == FALSE))
+	{
 		ft_putendl_fd("minishell: exit: numeric argument required", 2);
+		status = 2;
+	}
 	else if (ft_tablen(av) > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (FAILURE);
 	}
-	if (av != NULL && av[1] != NULL)
+	else if (av != NULL && av[1] != NULL)
 		status = ft_atoi(av[1]);
 	ft_free_tab(av);
 	ft_lstfree(*lst, free_env);

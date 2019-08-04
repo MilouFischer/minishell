@@ -54,7 +54,7 @@ static int	exec(t_list *lst, char **av)
 		exec_path(lst, av, env);
 	ft_free_tab(env);
 	ft_dprintf(2, "minishell: command not found: %s\n", av[0]);
-	return (FAILURE);
+	return (ERROR);
 }
 
 static int	interrupted_exec(int status)
@@ -99,8 +99,8 @@ int			exec_bin(char **av, t_list **lst)
 		return (FAILURE);
 	else if (pid == 0)
 	{
-		if (exec(*lst, av) == FAILURE)
-			exit(EXIT_FAILURE);
+		if (exec(*lst, av) == ERROR)
+			exit(ERROR);
 	}
 	else if (pid > 0)
 	{

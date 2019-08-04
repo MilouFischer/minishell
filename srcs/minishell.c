@@ -43,8 +43,7 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 		{
 			ft_free_tab(av);
 			ft_free_tab(tab_operand);
-			ft_lstfree(*lst, free_env);
-			return (FAILURE);
+			return (ret);
 		}
 		if (ft_strequ(*av, "exit") == TRUE)
 			ft_free_tab(tab_operand);

@@ -19,6 +19,8 @@
 # include "libft.h"
 # include "builtin.h"
 
+# define ERROR	127
+
 typedef struct	s_env
 {
 	char		*name;
