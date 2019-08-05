@@ -6,7 +6,7 @@
 #    By: efischer <efischer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 17:50:10 by efischer          #+#    #+#              #
-#    Updated: 2019/07/31 17:51:51 by efischer         ###   ########.fr        #
+#    Updated: 2019/08/05 14:00:13 by efischer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ CC = gcc
 CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -Werror
+#CFLAGS += -fsanitize=address,undefined -g3
 COMPILE += $(CC) -c
 
 #=====================================SRCS======================================

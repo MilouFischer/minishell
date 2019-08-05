@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 13:12:57 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 11:08:01 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		ft_process_av(char **av, size_t *index, uint8_t *flags)
 	}
 }
 
-static void		ft_print_arg(char **av, size_t i)
+static int		ft_print_arg(char **av, size_t i)
 {
 	char	*out;
 
@@ -51,8 +51,12 @@ static void		ft_print_arg(char **av, size_t i)
 		i++;
 	}
 	if (ft_putstr(out) == FAILURE)
-		ft_putendl_fd("minishell: echo: write error: Bad file descriptor", 2);
+	{
+		ft_strdel(&out);
+		return (FAILURE);
+	}
 	ft_strdel(&out);
+	return (SUCCESS);
 }
 
 int				echo_blt(char **av, t_list **lst)
@@ -67,9 +71,21 @@ int				echo_blt(char **av, t_list **lst)
 	if (av != NULL)
 	{
 		ft_process_av(av, &i, &flags);
-		ft_print_arg(av, i);
+		if (ft_print_arg(av, i) == FAILURE)
+		{
+			ft_putendl_fd("minishell: echo: write error: Bad file descriptor",
+			2);
+			return (FAILURE);
+		}
 	}
 	if ((flags & FLAG_N) == FALSE)
-		ft_putchar('\n');
+	{
+		if (ft_putchar('\n') == FAILURE)
+		{
+			ft_putendl_fd("minishell: echo: write error: Bad file descriptor",
+			2);
+			return (FAILURE);
+		}
+	}
 	return (SUCCESS);
 }

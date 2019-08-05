@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/05 13:59:03 by efischer          #+#    #+#             */
+/*   Updated: 2019/08/05 13:59:27 by efischer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	set_shlvl(t_list **lst)
@@ -25,20 +37,6 @@ static void	set_shlvl(t_list **lst)
 	}
 }
 
-void		set_ret(int ret, t_list **lst)
-{
-	char	*tab[4];
-	char	*str_ret;
-
-	str_ret = ft_itoa(ret);
-	tab[0] = "RET";
-	tab[1] = str_ret;
-	tab[2] = "1";
-	tab[3] = NULL;
-	setenv_blt(tab, lst);
-	ft_strdel(&str_ret);
-}
-
 void		init_env(t_list **lst)
 {
 	char	buf[PATH_MAX];
@@ -51,6 +49,4 @@ void		init_env(t_list **lst)
 		setenv_blt(env_var, lst);
 	}
 	set_shlvl(lst);
-	if (ft_getenv("RET", *lst) == NULL)
-		set_ret(0, lst);
 }

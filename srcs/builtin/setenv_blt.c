@@ -6,16 +6,14 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:38:32 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 13:55:30 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static t_list	*check_name(const char *name, t_list *lst, char *overwrite)
+static t_list	*check_name(const char *name, t_list *lst)
 {
-	if (ft_strequ(name, "RET") == TRUE && ft_strequ(overwrite, "1") == FALSE)
-		return (NULL);
 	while (lst != NULL)
 	{
 		if (ft_strequ(name, ((t_env*)(lst->content))->name) == TRUE)
@@ -49,13 +47,12 @@ static int		name_is_alnum(char *name)
 	return (TRUE);
 }
 
-static void		new_env_var(char *name, char *val, char *overwrite,
-				t_list **lst)
+static void		new_env_var(char *name, char *val, t_list **lst)
 {
 	t_list	*head;
 
 	head = *lst;
-	*lst = check_name(name, *lst, overwrite);
+	*lst = check_name(name, *lst);
 	if (*lst != NULL)
 	{
 		ft_strdel(&((t_env*)((*lst)->content))->value);
@@ -70,7 +67,6 @@ int				setenv_blt(char **av, t_list **lst)
 {
 	char	*name;
 	char	*val;
-	char	*overwrite;
 
 	if (ft_strequ(av[0], "setenv") == TRUE)
 		av++;
@@ -79,23 +75,20 @@ int				setenv_blt(char **av, t_list **lst)
 		print_env(*lst, "setenv");
 		return (SUCCESS);
 	}
-	if (ft_tablen(av) > 2 && ft_strequ(av[2], "1") == FALSE)
+	if (ft_tablen(av) > 2)
 	{
 		ft_putendl_fd("minishell: setenv: Too many arguments", 2);
 		return (FAILURE);
 	}
 	name = av[0];
 	val = av[1];
-	overwrite = NULL;
 	if (val == NULL)
 		val = "\0";
-	else
-		overwrite = av[2];
 	if (name_is_alnum(name) == FALSE)
 	{
 		ft_putendl_fd("minishell: setenv: invalid syntax", 2);
 		return (FAILURE);
 	}
-	new_env_var(name, val, overwrite, lst);
+	new_env_var(name, val, lst);
 	return (SUCCESS);
 }

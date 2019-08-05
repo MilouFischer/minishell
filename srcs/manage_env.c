@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:53:47 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/30 13:08:25 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 11:13:16 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@ void	print_env(t_list *lst, char *utility)
 	{
 		ft_dprintf(2, "minishell: %s: write error: Bad file descriptor\n",
 		utility);
+	}
+}
+
+void	print_env_one(t_list *lst, char *utility, char *env_var)
+{
+	t_list	*tmp;
+
+	tmp = find_env(env_var, lst);
+	if (tmp != NULL && ft_strequ(((t_env*)(tmp->content))->name, "RET")
+		== FALSE)
+	{
+		if (ft_putendl(((t_env*)(tmp->content))->value) == FAILURE)
+		{
+			ft_dprintf(2, "minishell: %s: write error: Bad file descriptor\n",
+			utility);
+		}
 	}
 }
 

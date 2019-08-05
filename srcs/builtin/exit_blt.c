@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 10:54:12 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 17:44:58 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 14:03:17 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			exit_blt(char **av, t_list **lst)
 {
 	int		status;
 
-	status = ft_atoi(ft_getenv("RET", *lst));
+	status = ret_value;
 	ft_putendl_fd("exit", 2);
 	if (av != NULL && av[1] != NULL && (ft_str_is_numeric(av[1]) == FALSE
 		|| compare_to_ulmax(av[1]) == FALSE))
@@ -48,6 +48,7 @@ int			exit_blt(char **av, t_list **lst)
 	}
 	else if (av != NULL && av[1] != NULL)
 		status = ft_atoi(av[1]);
+	keep_tab(NULL);
 	ft_free_tab(av);
 	ft_lstfree(*lst, free_env);
 	exit(status);

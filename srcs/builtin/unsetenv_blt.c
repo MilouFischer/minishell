@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 15:50:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:38:45 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 13:55:48 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	del_env(char *av, t_list **lst)
 	t_list	*head;
 
 	head = *lst;
-	if (ft_strequ(av, "RET") == TRUE)
-		return ;
 	del = find_env(av, *lst);
 	if (del == NULL)
 		return ;
