@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 14:01:39 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:07:35 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@
 # include "libft.h"
 # include "builtin.h"
 
-# define ERROR	127
+# define ERROR		127
+# define INIT_TAB	42
+# define FREE_TAB	0
 
-extern int		ret_value;
+extern int		g_ret;
+extern pid_t	g_pid;
 
 typedef struct	s_env
 {
@@ -46,6 +49,6 @@ int				exec_builtin(char **av, int *ret, t_list **lst);
 int				exec_bin(char **av, t_list **lst);
 void			print_env(t_list *lst, char *utility);
 void			print_env_one(t_list *lst, char *utility, char *env_var);
-void			keep_tab(char **tab_operand);
+void			keep_tab(char **tab_operand, uint8_t opt);
 
 #endif

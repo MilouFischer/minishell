@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 12:44:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:08:43 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,17 @@ int			exec_bin(char **av, t_list **lst)
 	int		cur_pid;
 
 	status = 0;
-	pid = fork();
-	if (pid == FAILURE)
+	g_pid = fork();
+	if (g_pid == FAILURE)
 		return (FAILURE);
-	else if (pid == 0)
+	else if (g_pid == 0)
 	{
 		if (exec(*lst, av) == ERROR)
 			exit(ERROR);
 	}
-	else if (pid > 0)
+	else if (g_pid > 0)
 	{
-		cur_pid = pid;
+		cur_pid = g_pid;
 		if (waitpid(cur_pid, &status, WUNTRACED) != 0)
 		{
 			if ((ret = interrupted_exec(status)) != FALSE)

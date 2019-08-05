@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 13:56:30 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:08:00 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,59 +48,64 @@ void		process_tilde(char **av, t_list *lst)
 	ft_strdel(&tilde_part);
 }
 
-static char	*check_dollar_operand(char **av, size_t *i, t_list *lst)
+static char	*special_dolar_operand(char c)
 {
-	char	*operand;
-	char	*env;
 	char	*new_av;
-	size_t	op_i;
+
+	new_av = NULL;
+	if (c == '\0')
+		new_av = ft_strdup("$");
+	else if (c == '?')
+		new_av = ft_itoa(g_ret);
+	return (new_av);
+}
+
+static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
+{
+	char	*new_av;
+	char	*operand;
+	char	*tmp;
 
 	(*i)++;
-	op_i = *i;
 	new_av = NULL;
-	operand = NULL;
-	if ((*av)[*i] == '?')
-		new_av = ft_itoa(ret_value);
-	if ((*av)[*i] != '\0')
+	if (av[*i] == '\0' || av[*i] == '?' || av[*i] == '$')
 	{
-		while ((*av)[op_i] != '\0' && ft_isalnum((*av)[op_i]) == TRUE)
-		{
-			op_i++;
-			operand = ft_strndup((*av) + *i, op_i - *i);
-			if ((env = ft_getenv(operand, lst)) != NULL)
-			{
-				*i = op_i;
-				ft_strdel(&operand);
-				new_av = ft_strdup(env);
-				if ((*av)[*i] != '$')
-					new_av = ft_join_free(new_av, (*av) + *i, 1);
-				return (new_av);
-			}
-			ft_strdel(&operand);
-		}
+		new_av = special_dolar_operand(av[*i]);
+		(*i)++;
+		return (new_av);
 	}
-	else if ((*av)[*i] == '\0') 
-		new_av = ft_strdup("$");
-	(*i)++;
+	tmp = av + *i;
+	while (av[*i] != '\0' && av[*i] != '$' && av[*i] != '/')
+		(*i)++;
+	operand = ft_strndup(tmp, (*i) - 1);
+	new_av = ft_strdup(ft_getenv(operand, lst));
+	ft_strdel(&operand);
 	return (new_av);
 }
 
 void		process_dollar(char **av, t_list *lst)
 {
 	size_t	i;
-	char	*tmp;
+	size_t	tmp_i;
 	char	*new_av;
+	char	*tmp;
 
 	i = 0;
 	new_av = NULL;
-	while ((*av)[i] != '\0' && (*av)[i] != '$')
-		i++;
-	tmp = ft_strsub(*av, 0, i);
-	while ((*av)[i] == '$')
-		new_av = ft_join_free(new_av, check_dollar_operand(av, &i, lst), 3);
-	if ((*av)[i] == '/')
-		new_av = ft_join_free(new_av, (*av) + i, 1);
-	new_av = ft_join_free(tmp, new_av, 3);
+	while ((*av)[i] != '\0')
+	{
+		tmp_i = i;
+		while ((*av)[tmp_i] != '\0' && (*av)[tmp_i] != '$')
+			tmp_i++;
+		tmp = ft_strndup((*av) + i, tmp_i - i);
+		i = tmp_i;
+		new_av = ft_join_free(new_av, tmp, 3);
+		if ((*av)[i] != '\0')
+		{
+			tmp = check_dollar_operand(*av, &i, lst);
+			new_av = ft_join_free(new_av, tmp, 3);
+		}
+	}
 	ft_strdel(av);
 	*av = new_av;
 }

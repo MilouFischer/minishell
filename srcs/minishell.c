@@ -6,14 +6,14 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 14:12:15 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:11:08 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-pid_t		pid;
-int			ret_value;
+pid_t		g_pid;
+int			g_ret;
 
 int			exec_command(char **av, t_list **lst)
 {
@@ -26,11 +26,11 @@ int			exec_command(char **av, t_list **lst)
 	return (ret);
 }
 
-void		keep_tab(char **tab_operand)
+void		keep_tab(char **tab_operand, uint8_t opt)
 {
 	static char **tab_cp;
 
-	if (tab_operand != NULL)
+	if (opt == INIT_TAB)
 		tab_cp = tab_operand;
 	else
 		ft_free_tab(tab_cp);
@@ -44,14 +44,9 @@ static int	check_follow(char *str)
 	i = 0;
 	if (ft_strchr(str, ';') == NULL)
 		return (TRUE);
-	if (ft_strstr(str, ";;") != NULL)
+	else if (str != NULL && (str[0] == ';' || ft_strstr(str, ";;") != NULL))
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token ';;'", 2);
-		return (FALSE);
-	}
-	if (str[0] == ';')
-	{
-		ft_putendl_fd("minishell: syntax error near unexpected token ';'", 2);
+		ft_putendl_fd("minishell: syntax error", 2);
 		return (FALSE);
 	}
 	tab = ft_strsplit(str, ';');
@@ -60,10 +55,7 @@ static int	check_follow(char *str)
 		if (ft_str_is_blank(tab[i]) == TRUE)
 		{
 			ft_free_tab(tab);
-			if (i == 0)
-				ft_putendl_fd("minishell: syntax error near unexpected token ';'", 2);
-			else
-				ft_putendl_fd("minishell: syntax error near unexpected token ';;'", 2);
+			ft_putendl_fd("minishell: syntax error", 2);
 			return (FALSE);
 		}
 		i++;
@@ -81,14 +73,14 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 
 	i = 0;
 	av = NULL;
-	ret = ret_value;
+	ret = g_ret;
 	if (check_follow(buf) == FALSE)
 	{
 		ft_strdel(&buf);
 		return (2);
 	}
 	tab_operand = ft_strsplit(buf, ';');
-	keep_tab(tab_operand);
+	keep_tab(tab_operand, INIT_TAB);
 	ft_strdel(&buf);
 	while (tab_operand[i] != NULL)
 	{
@@ -130,15 +122,15 @@ void	sigint_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		if (pid == 0)
+		if (g_pid == 0)
 		{
 			ft_putstr_fd("\n$> ", 2);
-			ret_value = 127;
+			g_ret = 127;
 		}
 		else
 			ft_putstr_fd("\n", 2);
 	}
-	pid = 0;
+	g_pid = 0;
 }
 
 static void	init_sig(void)
@@ -163,14 +155,16 @@ int			main(int ac, char **av, char **envp)
 		return (EXIT_FAILURE);
 	}
 	lst = NULL;
+	keep_tab(NULL, INIT_TAB);
 	ft_bzero(&lst, sizeof(lst));
 	get_env_lst(envp, &lst);
 	init_env(&lst);
 	while (1)
 	{
-		pid = 0;
+		g_pid = 0;
 		ft_putstr_fd("$> ", 2);
-		ret_value = process_command(&lst);
+		g_ret = process_command(&lst);
+		keep_tab(NULL, INIT_TAB);
 	}
 	return (EXIT_SUCCESS);
 }
