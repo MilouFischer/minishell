@@ -6,22 +6,24 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:53:47 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 11:13:16 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:27:45 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env(t_list *lst, char *utility)
+int		print_env(t_list *lst, char *utility)
 {
 	if (ft_lstprint(lst, get_content_to_print) == FAILURE)
 	{
 		ft_dprintf(2, "minishell: %s: write error: Bad file descriptor\n",
 		utility);
+		return (FAILURE);
 	}
+	return (SUCCESS);
 }
 
-void	print_env_one(t_list *lst, char *utility, char *env_var)
+int		print_env_one(t_list *lst, char *utility, char *env_var)
 {
 	t_list	*tmp;
 
@@ -33,8 +35,10 @@ void	print_env_one(t_list *lst, char *utility, char *env_var)
 		{
 			ft_dprintf(2, "minishell: %s: write error: Bad file descriptor\n",
 			utility);
+			return (FAILURE);
 		}
 	}
+	return (SUCCESS);
 }
 
 void	put_name_val_in_tab(char *name, char *value, char **env_var)

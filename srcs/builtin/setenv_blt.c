@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 11:38:36 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 13:55:30 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:26:47 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ int				setenv_blt(char **av, t_list **lst)
 	if (ft_strequ(av[0], "setenv") == TRUE)
 		av++;
 	if (*av == NULL)
-	{
-		print_env(*lst, "setenv");
-		return (SUCCESS);
-	}
+		return (print_env(*lst, "setenv"));
 	if (ft_tablen(av) > 2)
 	{
 		ft_putendl_fd("minishell: setenv: Too many arguments", 2);

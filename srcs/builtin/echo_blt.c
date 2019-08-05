@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:57:51 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 11:08:01 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:24:10 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,20 @@ static int		ft_print_arg(char **av, size_t i)
 	return (SUCCESS);
 }
 
+static int		print_endl(uint8_t flags)
+{
+	if ((flags & FLAG_N) == FALSE)
+	{
+		if (ft_putchar('\n') == FAILURE)
+		{
+			ft_putendl_fd("minishell: echo: write error: Bad file descriptor",
+			2);
+			return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
+
 int				echo_blt(char **av, t_list **lst)
 {
 	uint8_t		flags;
@@ -78,14 +92,7 @@ int				echo_blt(char **av, t_list **lst)
 			return (FAILURE);
 		}
 	}
-	if ((flags & FLAG_N) == FALSE)
-	{
-		if (ft_putchar('\n') == FAILURE)
-		{
-			ft_putendl_fd("minishell: echo: write error: Bad file descriptor",
-			2);
-			return (FAILURE);
-		}
-	}
+	if (print_endl(flags) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:07:35 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:27:52 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void			process_dollar(char **av, t_list *lst);
 void			process_tilde(char **av, t_list *lst);
 int				exec_builtin(char **av, int *ret, t_list **lst);
 int				exec_bin(char **av, t_list **lst);
-void			print_env(t_list *lst, char *utility);
-void			print_env_one(t_list *lst, char *utility, char *env_var);
+int				print_env(t_list *lst, char *utility);
+int				print_env_one(t_list *lst, char *utility, char *env_var);
 void			keep_tab(char **tab_operand, uint8_t opt);
 
 #endif
