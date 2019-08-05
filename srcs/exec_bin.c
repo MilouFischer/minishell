@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:08:43 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:37:05 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,25 @@ static int	exec(t_list *lst, char **av)
 
 static int	interrupted_exec(int status)
 {
-	int		ret;
-
 	if (WIFSIGNALED(status))
 	{
-		ret = WTERMSIG(status);
-		if (ret == SIGSEGV)
+		if (WTERMSIG(status) == SIGSEGV)
 			ft_putendl_fd("\nsegmentation fault", 2);
-		if (ret == SIGABRT)
+		else if (WTERMSIG(status) == SIGABRT)
 			ft_putendl_fd("\nabort", 2);
-		if (ret == SIGILL)
+		else if (WTERMSIG(status) == SIGILL)
 			ft_putendl_fd("\nillegal option", 2);
-		if (ret == SIGFPE)
+		else if (WTERMSIG(status) == SIGFPE)
 			ft_putendl_fd("\nfloating point exception", 2);
-		if (ret == SIGPIPE)
-			ft_putendl_fd("", 2);
-		if (ret == SIGALRM)
+		else if (WTERMSIG(status) == SIGPIPE)
+			ft_putendl_fd("broken pipe", 2);
+		else if (WTERMSIG(status) == SIGALRM)
 			ft_putendl_fd("\nalert signal", 2);
-		if (ret == SIGTERM)
+		else if (WTERMSIG(status) == SIGTERM)
 			ft_putendl_fd("\ncomplet", 2);
-		if (ret == SIGKILL)
+		else if (WTERMSIG(status) == SIGKILL)
 			ft_putendl_fd("\nkilled", 2);
-		return (ret + 128);
+		return (WTERMSIG(status) + 128);
 	}
 	else if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

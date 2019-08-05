@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 12:31:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:35:25 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 16:49:08 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ static int	*get_index_tab(char **tab)
 	i = 0;
 	while (tab[i] != NULL)
 		i++;
+	if (i == 0)
+		return (NULL);
 	index_tab = (int*)malloc(sizeof(int) * i);
+	if (index_tab == NULL)
+		return (NULL);
 	ft_bzero(index_tab, i);
 	fill_index_tab(&index_tab, tab, i);
 	return (index_tab);
@@ -66,7 +70,7 @@ static char	*path_cleaning(char *path)
 	index_tab = get_index_tab(tab);
 	while (tab[i] != NULL)
 	{
-		if (index_tab[i] > 0)
+		if (index_tab != NULL && index_tab[i] > 0)
 		{
 			clean_path = ft_join_free(clean_path, "/", 1);
 			clean_path = ft_join_free(clean_path, tab[i], 1);

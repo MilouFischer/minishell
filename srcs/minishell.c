@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:11:08 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/05 17:01:27 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	process_command(t_list **lst)
 	if (get_next_line(0, &buf) == FAILURE)
 	{
 		ft_strdel(&buf);
-		ft_putstr("minishell: error read input\n");
+		ft_putendl_fd("minishell: error read input", 2);
 		exit(EXIT_FAILURE);
 	}
 	get_next_line(-42, NULL);
