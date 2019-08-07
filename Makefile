@@ -6,7 +6,7 @@
 #    By: efischer <efischer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 17:50:10 by efischer          #+#    #+#              #
-#    Updated: 2019/08/07 16:44:52 by efischer         ###   ########.fr        #
+#    Updated: 2019/08/07 19:20:09 by efischer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS += exec_bin.c
 SRCS += init_env.c
 SRCS += util.c
 SRCS += signal.c
+SRCS += bracket.c
 
 #///////////////////////////////////BUILTIN/////////////////////////////////////
 
