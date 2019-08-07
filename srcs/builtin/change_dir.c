@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 12:32:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/31 18:42:10 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 12:07:10 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int			change_dir(char *curpath, char *dir_op, t_list **lst)
 	int		error;
 
 	error = 0;
+	if (ft_strequ(ft_getenv("ENV_BLT", *lst), "1") == TRUE)
+		return (SUCCESS);
 	if ((ret = check_pathmax(&curpath, dir_op, *lst)) == FAILURE)
 		put_error("minishell: cd: ", dir_op, EPATH, *lst);
 	else if ((ret = check_access(curpath, &error)) == FAILURE)

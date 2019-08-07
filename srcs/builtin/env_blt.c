@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 17:01:28 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 12:04:09 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	change_env(char ***av, t_list **lst)
 		get_new_env(**av, lst);
 		(*av)++;
 	}
+	get_new_env("ENV_BLT=1", lst);
 }
 
 static void	get_lst_cpy(t_list **local_lst, t_list *lst)
