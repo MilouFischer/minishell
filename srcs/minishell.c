@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 17:01:27 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 12:30:11 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	sigint_handler(int signo)
 		if (g_pid == 0)
 		{
 			ft_putstr_fd("\n$> ", 2);
-			g_ret = 127;
+			g_ret = 130;
 		}
 		else
 			ft_putstr_fd("\n", 2);

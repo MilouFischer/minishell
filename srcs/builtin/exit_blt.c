@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 10:54:12 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:09:31 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 12:28:56 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			exit_blt(char **av, t_list **lst)
 	else if (ft_tablen(av) > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return (FAILURE);
+		return (status);
 	}
 	else if (av != NULL && av[1] != NULL)
 		status = ft_atoi(av[1]);
