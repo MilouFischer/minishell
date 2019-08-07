@@ -6,7 +6,7 @@
 #    By: efischer <efischer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 17:50:10 by efischer          #+#    #+#              #
-#    Updated: 2019/08/07 11:40:21 by efischer         ###   ########.fr        #
+#    Updated: 2019/08/07 12:51:58 by efischer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,16 +83,16 @@ $(PATHO):
 	mkdir $@
 
 $(LIBFT): FORCE
-	make -C $(PATHLIB)
+	$(MAKE) -C $(PATHLIB)
 
 clean:
 	$(RM) $(OBJS)
 	$(RM) -R $(PATHO)
-	make clean -C $(PATHLIB)
+	$(MAKE) clean -C $(PATHLIB)
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean -C $(PATHLIB)
+	$(MAKE) fclean -C $(PATHLIB)
 
 re: fclean all
 

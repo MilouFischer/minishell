@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 10:51:00 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 12:04:09 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 13:00:10 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	change_env(char ***av, t_list **lst)
 		get_new_env(**av, lst);
 		(*av)++;
 	}
-	get_new_env("ENV_BLT=1", lst);
 }
 
 static void	get_lst_cpy(t_list **local_lst, t_list *lst)
@@ -66,7 +65,10 @@ int			env_blt(char **av, t_list **lst)
 		get_lst_cpy(&local_lst, *lst);
 	change_env(&av, &local_lst);
 	if (*av != NULL)
+	{
+		get_new_env("ENV_BLT=1", &local_lst);
 		exec_command(av, &local_lst);
+	}
 	else
 		print_env(local_lst, "env");
 	ft_lstfree(local_lst, free_env);

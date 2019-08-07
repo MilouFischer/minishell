@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 15:08:56 by efischer          #+#    #+#             */
-/*   Updated: 2019/07/23 12:43:21 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 13:01:35 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	get_content_to_print(t_list *lst, t_list **elem)
 
 	tmp = NULL;
 	ft_bzero(elem, sizeof(*elem));
-	if (ft_strequ(((t_env*)(lst->content))->name, "RET") == FALSE)
+	if (ft_strequ(((t_env*)(lst->content))->name, "ENV_BLT") == FALSE)
 	{
 		tmp = ft_asprintf("%s=%s\n", ((t_env*)(lst->content))->name,
 		((t_env*)(lst->content))->value);

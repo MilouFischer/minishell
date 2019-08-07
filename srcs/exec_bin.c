@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 12:11:16 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 13:34:59 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,20 @@ static void	exec_path(t_list *lst, char **av, char **env)
 
 static int	exec(t_list *lst, char **av)
 {
-	char	**env;
-	char	*path;
+	char		**env;
+	char		*path;
+	struct stat	buf;
 
 	env = ft_lst_to_char_tab(lst, get_content_to_tab);
 	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
 	{
 		path = av[0];
 		execve(path, av, env);
-		ft_dprintf(2, "minishell: %s: No such file or directory\n", av[0]);
+		lstat(path, &buf);
+		if ((buf.st_mode & S_IFDIR) == S_IFDIR)
+			ft_dprintf(2, "minishell: %s: Is a directory\n", av[0]);
+		else
+			ft_dprintf(2, "minishell: %s: No such file or directory\n", av[0]);
 		ft_strdel(&path);
 	}
 	else

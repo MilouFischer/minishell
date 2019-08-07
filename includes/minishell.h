@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:27:52 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 13:25:51 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdint.h>
+# include <sys/stat.h>
 # include "libft.h"
 # include "builtin.h"
 
