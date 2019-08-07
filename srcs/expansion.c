@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 10:52:40 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 13:44:02 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
 	}
 	else
 	{
-		while (av[*i] != '\0' && av[*i] != '$' && av[*i] != '/')
+		while (av[*i] != '\0' && av[*i] != '$' && av[*i] != '/' && av[*i] != ':')
 			(*i)++;
 		operand = ft_strndup(tmp, *i - 1);
 	}
