@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 14:55:22 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 16:39:03 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,60 +26,11 @@ int			exec_command(char **av, t_list **lst)
 	return (ret);
 }
 
-void		keep_tab(char **tab_operand, uint8_t opt)
+static void	exec_each_operand(char **tab_operand, char **av, t_list **lst)
 {
-	static char **tab_cp;
-
-	if (opt == INIT_TAB)
-		tab_cp = tab_operand;
-	else
-		ft_free_tab(tab_cp);
-}
-
-static int	check_follow(char *str)
-{
-	char	**tab;
 	size_t	i;
 
 	i = 0;
-	if (ft_strchr(str, ';') == NULL)
-		return (TRUE);
-	else if (str != NULL && (str[0] == ';' || ft_strstr(str, ";;") != NULL))
-	{
-		ft_putendl_fd("minishell: syntax error", 2);
-		return (FALSE);
-	}
-	tab = ft_strsplit(str, ';');
-	while (tab[i] != NULL)
-	{
-		if (ft_str_is_blank(tab[i]) == TRUE)
-		{
-			ft_free_tab(tab);
-			ft_putendl_fd("minishell: syntax error", 2);
-			return (FALSE);
-		}
-		i++;
-	}
-	ft_free_tab(tab);
-	return (TRUE);
-}
-
-static int	split_and_exec_command(char *buf, t_list **lst)
-{
-	char	**tab_operand;
-	char	**av;
-	size_t	i;
-
-	i = 0;
-	av = NULL;
-	if (check_follow(buf) == FALSE)
-	{
-		ft_strdel(&buf);
-		return (2);
-	}
-	tab_operand = ft_strsplit(buf, ';');
-	keep_tab(tab_operand, INIT_TAB);
-	ft_strdel(&buf);
 	while (tab_operand[i] != NULL)
 	{
 		if (ft_get_command(&av, tab_operand[i], *lst) == FALSE)
@@ -92,6 +43,23 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 		ft_free_tab(av);
 		i++;
 	}
+}
+
+static int	split_and_exec_command(char *buf, t_list **lst)
+{
+	char	**tab_operand;
+	char	**av;
+
+	av = NULL;
+	if (check_follow(buf) == FALSE)
+	{
+		ft_strdel(&buf);
+		return (2);
+	}
+	tab_operand = ft_strsplit(buf, ';');
+	keep_tab(tab_operand, INIT_TAB);
+	ft_strdel(&buf);
+	exec_each_operand(tab_operand, av, lst);
 	ft_free_tab(tab_operand);
 	return (g_ret);
 }
@@ -114,31 +82,6 @@ static int	process_command(t_list **lst)
 	if ((ret = split_and_exec_command(buf, lst)) != SUCCESS)
 		return (ret);
 	return (SUCCESS);
-}
-
-void	sigint_handler(int signo)
-{
-	if (signo == SIGINT)
-	{
-		if (g_pid == 0)
-		{
-			ft_putstr_fd("\n$> ", 2);
-			g_ret = 130;
-		}
-		else
-			ft_putstr_fd("\n", 2);
-	}
-	g_pid = 0;
-}
-
-static void	init_sig(void)
-{
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGCONT, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
 }
 
 int			main(int ac, char **av, char **envp)

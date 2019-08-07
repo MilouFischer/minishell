@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 14:50:55 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 16:24:13 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
 	char	*new_av;
 	char	*operand;
 	char	*tmp;
+	size_t	tmp_i;
 
 	(*i)++;
 	new_av = NULL;
@@ -97,9 +98,11 @@ static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
 	}
 	else
 	{
-		while (av[*i] != '\0' && av[*i] != '$' && av[*i] != '/' && av[*i] != ':')
-			(*i)++;
-		operand = ft_strndup(tmp, *i - 1);
+		tmp_i = *i;
+		while (av[tmp_i] != '\0' && av[tmp_i] != '$' && av[tmp_i] != '/' && av[tmp_i] != ':')
+			tmp_i++;
+		operand = ft_strndup(tmp, tmp_i - *i - 1);
+		*i = tmp_i;
 	}
 	if (ft_strequ(operand, "?") == TRUE || ft_strequ(operand, "$") == TRUE)
 		new_av = special_dolar_operand(*operand);

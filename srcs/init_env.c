@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 13:59:03 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 11:31:43 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 15:26:56 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void	increase_shlvl(char *shlvl, t_list **lst)
 		shlvl = ft_strdup("0");
 	else if (lvl_val + 1 >= 1000)
 	{
-		ft_dprintf(2, "minishell: warning: shell level (%ld) too high, resetting to 1\n", lvl_val + 1);
+		ft_dprintf(2,
+			"minishell: warning: shell level (%ld) too high, resetting to 1\n",
+			lvl_val + 1);
 		shlvl = ft_strdup("1");
 	}
 	else

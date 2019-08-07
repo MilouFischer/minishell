@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 14:37:50 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 16:39:01 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,8 @@ int				exec_bin(char **av, t_list **lst);
 int				print_env(t_list *lst, char *utility);
 int				print_env_one(t_list *lst, char *utility, char *env_var);
 void			keep_tab(char **tab_operand, uint8_t opt);
+void			sigint_handler(int signo);
+void			init_sig(void);
+int				check_follow(char *str);
 
 #endif
