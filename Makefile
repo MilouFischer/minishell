@@ -6,7 +6,7 @@
 #    By: efischer <efischer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 17:50:10 by efischer          #+#    #+#              #
-#    Updated: 2019/08/07 16:39:41 by efischer         ###   ########.fr        #
+#    Updated: 2019/08/07 16:44:52 by efischer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SRCS += minishell.c
 SRCS += manage_env.c
 SRCS += list_functions.c
 SRCS += get_command.c
-SRCS += expansion.c
+SRCS += tilde_expansion.c
+SRCS += dollar_expansion.c
 SRCS += exec_blt.c
 SRCS += exec_bin.c
 SRCS += init_env.c
