@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 16:37:05 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 11:50:16 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ static int	exec(t_list *lst, char **av)
 	{
 		path = av[0];
 		execve(path, av, env);
+		ft_dprintf(2, "minishell: %s: No such file or directory\n", av[0]);
 		ft_strdel(&path);
 	}
 	else
+	{
 		exec_path(lst, av, env);
+		if (ft_strequ(av[0], "") == FALSE)
+			ft_dprintf(2, "minishell: Command not found: %s\n", av[0]);
+	}
 	ft_free_tab(env);
-	if (ft_strequ(av[0], "") == FALSE)
-		ft_dprintf(2, "minishell: command not found: %s\n", av[0]);
 	return (ERROR);
 }
 

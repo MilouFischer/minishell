@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 15:50:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/05 13:55:48 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 11:35:58 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int			unsetenv_blt(char **av, t_list **lst)
 	{
 		ft_putendl_fd("minishell: unsetenv: Too few arguments", 2);
 		return (FAILURE);
+	}
+	if (ft_strequ(*av, "*") == TRUE)
+	{
+		ft_lstdel(lst, free_env);
+		return (SUCCESS);
 	}
 	while (av[i] != NULL)
 	{
