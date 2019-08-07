@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:19:31 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 13:44:02 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 14:50:55 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static char	*special_dolar_operand(char c)
 		new_av = ft_strdup("$");
 	else if (c == '?')
 		new_av = ft_itoa(g_ret);
+	else if (c == '$')
+		new_av = ft_itoa(getpid());
 	return (new_av);
 }
 
@@ -75,11 +77,22 @@ static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
 		return (new_av);
 	}
 	tmp = av + *i;
-	if (av[*i] == '{' && ft_strchr(av, '}') != NULL)
+	if (av[*i] == '{')
 	{
+		if (ft_strchr(av, '}') == NULL)
+		{
+			ft_dprintf(2, "minishell: %s: bad substitution\n", av);
+			return (NULL);
+		}
 		while (av[*i] != '\0' && av[*i] != '}')
 			(*i)++;
 		operand = ft_strsub(tmp, 1, *i - 2);
+		if (*operand == '\0')
+		{
+			ft_dprintf(2, "minishell: %s: bad substitution\n", av);
+			ft_strdel(&operand);
+			return (NULL);
+		}
 		(*i)++;
 	}
 	else
@@ -88,12 +101,15 @@ static char	*check_dollar_operand(char *av, size_t *i, t_list *lst)
 			(*i)++;
 		operand = ft_strndup(tmp, *i - 1);
 	}
-	new_av = ft_strdup(ft_getenv(operand, lst));
+	if (ft_strequ(operand, "?") == TRUE || ft_strequ(operand, "$") == TRUE)
+		new_av = special_dolar_operand(*operand);
+	else
+		new_av = ft_strdup(ft_getenv(operand, lst));
 	ft_strdel(&operand);
 	return (new_av);
 }
 
-void		process_dollar(char **av, t_list *lst)
+int			process_dollar(char **av, t_list *lst)
 {
 	size_t	i;
 	size_t	tmp_i;
@@ -113,9 +129,16 @@ void		process_dollar(char **av, t_list *lst)
 		if ((*av)[i] != '\0')
 		{
 			tmp = check_dollar_operand(*av, &i, lst);
+			if (tmp == NULL)
+			{
+				ft_strdel(&tmp);
+				ft_strdel(&new_av);
+				return (FAILURE);
+			}
 			new_av = ft_join_free(new_av, tmp, 3);
 		}
 	}
 	ft_strdel(av);
 	*av = new_av;
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/15 10:05:15 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 12:30:11 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 14:55:22 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,9 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 	char	**tab_operand;
 	char	**av;
 	size_t	i;
-	int		ret;
 
 	i = 0;
 	av = NULL;
-	ret = g_ret;
 	if (check_follow(buf) == FALSE)
 	{
 		ft_strdel(&buf);
@@ -87,15 +85,15 @@ static int	split_and_exec_command(char *buf, t_list **lst)
 		if (ft_get_command(&av, tab_operand[i], *lst) == FALSE)
 		{
 			ft_free_tab(av);
-			ft_free_tab(tab_operand);
-			return (ret);
+			i++;
+			continue ;
 		}
-		ret = exec_command(av, lst);
+		g_ret = exec_command(av, lst);
 		ft_free_tab(av);
 		i++;
 	}
 	ft_free_tab(tab_operand);
-	return (ret);
+	return (g_ret);
 }
 
 static int	process_command(t_list **lst)

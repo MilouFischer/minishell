@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 13:25:51 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/07 14:37:50 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int				exec_command(char **av, t_list **lst);
 t_list			*cpy_lst(t_list	*lst);
 void			init_env(t_list **lst);
 void			put_name_val_in_tab(char *name, char *value, char **env_var);
-void			process_dollar(char **av, t_list *lst);
+int				process_dollar(char **av, t_list *lst);
 void			process_tilde(char **av, t_list *lst);
 int				exec_builtin(char **av, int *ret, t_list **lst);
 int				exec_bin(char **av, t_list **lst);
