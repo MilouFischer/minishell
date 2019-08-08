@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 09:50:52 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 19:19:33 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/08 14:30:08 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void			sigint_handler(int signo);
 void			init_sig(void);
 int				check_follow(char *str);
 int				check_bracket(char *str);
+char			*process_operand(char *av, size_t *i, t_list *lst);
 
 #endif
