@@ -6,62 +6,71 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/07 13:34:59 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/08 13:22:40 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exec_path(t_list *lst, char **av, char **env)
+static char	*find_path(char *av, t_list *lst)
 {
-	char	**path_tab;
-	char	*path;
-	size_t	i;
+	char		**path_tab;
+	char		*path;
+	struct stat	buf;
+	size_t		i;
 
 	i = 0;
-	path = NULL;
-	while (lst != NULL
-	&& ft_strequ(((t_env*)(lst->content))->name, "PATH") == FALSE)
-		lst = lst->next;
-	if (lst == NULL)
-		return ;
-	path_tab = ft_strsplit(((t_env*)(lst->content))->value, ':');
+	if ((path = ft_getenv("PATH", lst)) == NULL)
+		return (NULL);
+	path_tab = ft_strsplit(path, ':');
+	ft_strdel(&path);
 	if (path_tab == NULL)
-		return ;
+		return (NULL);
 	while (path_tab[i] != NULL)
 	{
-		path = ft_asprintf("%s/%s", path_tab[i], av[0]);
-		execve(path, av, env);
+		path = ft_asprintf("%s/%s", path_tab[i], av);
+		if (lstat(path, &buf) != FAILURE)
+			break ;
 		ft_strdel(&path);
 		i++;
 	}
 	ft_free_tab(path_tab);
+	return (path);
+}
+
+static int	check_path(char *path, char *av)
+{
+	struct stat	buf;
+
+	if (lstat(path, &buf) == FAILURE)
+	{
+		if (av[0] != '/' && ft_strnequ(av, "./", 2) == FALSE)
+			ft_dprintf(2, "minishell: command not found: %s\n", av);
+		else
+			ft_dprintf(2, "minishell: %s: No such file or directory\n", av);
+	}
+	else if ((buf.st_mode & S_IFDIR) == S_IFDIR)
+		ft_dprintf(2, "minishell: %s: Is a directory\n", av);
+	else if ((buf.st_mode & S_IFREG) == S_IFREG && (buf.st_mode & S_IXUSR) != S_IXUSR)
+		ft_dprintf(2, "minishell: %s: Permission denied\n", av);
+	else
+		return (SUCCESS);
+	return (FAILURE);
 }
 
 static int	exec(t_list *lst, char **av)
 {
-	char		**env;
-	char		*path;
-	struct stat	buf;
+	char	*path;
+	char	**env;
 
 	env = ft_lst_to_char_tab(lst, get_content_to_tab);
-	if (av[0][0] == '/' || ft_strnequ(av[0], "./", 2) == TRUE)
-	{
-		path = av[0];
-		execve(path, av, env);
-		lstat(path, &buf);
-		if ((buf.st_mode & S_IFDIR) == S_IFDIR)
-			ft_dprintf(2, "minishell: %s: Is a directory\n", av[0]);
-		else
-			ft_dprintf(2, "minishell: %s: No such file or directory\n", av[0]);
-		ft_strdel(&path);
-	}
+	if (av[0][0] != '/' && ft_strnequ(av[0], "./", 2) == FALSE)
+		path = find_path(*av, lst);
 	else
-	{
-		exec_path(lst, av, env);
-		if (ft_strequ(av[0], "") == FALSE)
-			ft_dprintf(2, "minishell: command not found: %s\n", av[0]);
-	}
+		path = av[0];
+	if (check_path(path, *av) == SUCCESS)
+		execve(path, av, env);
+	ft_strdel(&path);
 	ft_free_tab(env);
 	return (ERROR);
 }
