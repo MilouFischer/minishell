@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 16:42:07 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/08 14:43:43 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/08 14:48:24 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static char	*get_operand(char *av, size_t *i, uint8_t flag, t_list *lst)
 		}
 		if (av[count] == '}' && flag == 1)
 			break ;
-		else if ((av[count] == '$' || av[count] == '/' || av[count] == ':') && flag == 0)
+		else if ((av[count] == '$' || av[count] == '/' || av[count] == ':')
+				&& flag == 0)
 			break ;
 		count++;
 	}

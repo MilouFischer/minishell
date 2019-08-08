@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 10:30:17 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/08 13:22:40 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/08 14:47:54 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	check_path(char *path, char *av)
 	}
 	else if ((buf.st_mode & S_IFDIR) == S_IFDIR)
 		ft_dprintf(2, "minishell: %s: Is a directory\n", av);
-	else if ((buf.st_mode & S_IFREG) == S_IFREG && (buf.st_mode & S_IXUSR) != S_IXUSR)
+	else if ((buf.st_mode & S_IFREG) == S_IFREG
+			&& (buf.st_mode & S_IXUSR) != S_IXUSR)
 		ft_dprintf(2, "minishell: %s: Permission denied\n", av);
 	else
 		return (SUCCESS);

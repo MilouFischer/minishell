@@ -6,7 +6,7 @@
 /*   By: efischer <efischer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 19:18:40 by efischer          #+#    #+#             */
-/*   Updated: 2019/08/08 13:56:59 by efischer         ###   ########.fr       */
+/*   Updated: 2019/08/08 14:46:28 by efischer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int			check_bracket(char *str)
 	size_t	i;
 
 	i = 0;
-
 	tab = ft_strsplit(str, '$');
 	if (tab == NULL)
 		return (FAILURE);
